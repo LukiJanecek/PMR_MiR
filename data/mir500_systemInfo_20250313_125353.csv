@@ -1,0 +1,2 @@
+pc_info,"{'nuc_serial': 'Chassis Serial Number', 'bios_version': 'B186.25C', 'ssd_serial': '1B0607850F0802300576', 'ram_serial': ''}"
+video_devices,"{'/dev/video11': '811313021636', '/dev/video10': '811313021636', '/dev/video9': '811313021636', '/dev/video8': '811313021636', '/dev/video7': '811313021636', '/dev/video6': '811313021636', '/dev/video5': '844513021098', '/dev/video4': '844513021098', '/dev/video3': '844513021098', '/dev/video2': '844513021098', '/dev/video1': '844513021098', '/dev/video0': '844513021098'}"
