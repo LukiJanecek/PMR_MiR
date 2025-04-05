@@ -1,18 +1,6 @@
 def connect_to_robot(auth_code, robot_number):
         return True  # Simulated successful connection
 
-        auth_code = self.auth_var.get()
-        robot_number = self.robot_var.get()
-        
-        if not auth_code or not robot_number:
-            messagebox.showerror("Error", "Please select both Role and Robot.")
-            return
-        
-        self.client_socket = True  # Simulated connection
-        messagebox.showinfo("Info", f"Successfully connected to {robot_number} as {auth_code}!")
-        self.create_data_ui()
-
-
 
 
 def get_map():

@@ -19,17 +19,23 @@ class RestApiGui:
         self.root = root
         self.root.title("MiR REST API GUI")
 
-        width = 250
-        height = 170
+        self.data = {
+            "Temperature": [10, 15, 20, 25, 30],
+            "Brakes": [101, 102, 100, 99, 101],
+            "Speed": [30, 40, 50, 60, 70]
+        }
+
+        self.data_categories = list(self.data.keys())
+        #self.data_categories = ["Category 1", "Category 2", "Category 3"]
 
         self.place_to_center_tool(250, 170)
-
         self.create_login_ui()
         
     def create_login_ui(self):
         self.clear_window()
+        self.root.title("MiR Login")
+        self.place_to_center_tool(250, 170)
 
-        
         tk.Label(self.root, text="Select Role:").pack()
         self.auth_var = tk.StringVar()
         self.auth_var.set("student")
@@ -61,6 +67,7 @@ class RestApiGui:
         
     def main_data_ui(self):
         self.clear_window()
+        self.root.title("MiR Data Collection")
         self.place_to_center_tool(450, 400)
 
         left_frame = tk.Frame(self.root)
@@ -146,30 +153,34 @@ class RestApiGui:
 
     def process_data_ui(self):
         self.clear_window()
-        self.place_to_center_tool(600, 400)
-        
-        menu_bar = Menu(self.root)
-        self.root.config(menu=menu_bar)
+        self.root.title("MiR Data Processing")
+        self.place_to_center_tool(800, 400)
 
-        self.data_categories = ["Brakes", "Temp", "Battery", "Current", "Speed"]
-        self.data = {item: [random.randint(0, 100) for _ in range(10)] for item in self.data_categories}
-        
-        data_menu = Menu(menu_bar, tearoff=0)
-        for item in self.data_categories:
-            data_menu.add_command(label=item, command=lambda i=item: self.update_plot(i))
-        menu_bar.add_cascade(label="Select Data", menu=data_menu)
-        
         main_frame = tk.Frame(self.root)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
-        
-        self.listbox = tk.Listbox(main_frame, height=20, width=30)
-        self.listbox.pack(side=tk.LEFT, padx=10, pady=10, fill=tk.Y)
-        
+
+        left_frame = tk.Frame(main_frame)
+        left_frame.pack(side=tk.LEFT, fill=tk.Y, padx=10, pady=10)
+
+        # Nadpis
+        tk.Label(left_frame, text="Select Data:", font=("Arial", 14, "bold")).pack(pady=(0, 10))
+
+        # Dynamické tlačítka pod sebe
+        for item in self.data_categories:
+            tk.Button(left_frame, text=item, command=lambda i=item: self.update_plot(i), width=20).pack(pady=2)
+
+        # Listbox pod tlačítky
+        self.listbox = tk.Listbox(left_frame, height=20, width=30)
+        self.listbox.pack(pady=10, fill=tk.BOTH, expand=True)
+
+        # Pravá část - Graf
         self.figure, self.ax = plt.subplots()
         self.canvas = FigureCanvasTkAgg(self.figure, master=main_frame)
         self.canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
-        
-        self.update_plot("Brakes")
+
+        # Načtení grafu s default daty
+        self.update_plot(self.data_categories[0])
+
 
     def update_plot(self, category):
         """Aktualizuje listbox a graf pro vybranou kategorii."""
