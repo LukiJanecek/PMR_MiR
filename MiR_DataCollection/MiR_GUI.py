@@ -1,4 +1,4 @@
-import MiR_BE
+#import MiR_BE
 import MiR_BE_TEMPORARY
 
 import tkinter as tk
@@ -27,6 +27,9 @@ class RestApiGui:
 
         self.data_categories = list(self.data.keys())
         #self.data_categories = ["Category 1", "Category 2", "Category 3"]
+
+        self.logged_user = None
+        self.logged_robot = None
 
         self.place_to_center_tool(250, 170)
         self.create_login_ui()
@@ -59,6 +62,9 @@ class RestApiGui:
         success = MiR_BE_TEMPORARY.connect_to_robot(auth_code, robot_number)
         if not success:
             messagebox.showerror("Error", f"Failed to connect to {robot_number} as {auth_code}.")
+            self.logged_user = auth_code
+            self.logged_robot = robot_number
+
             return
         if success:
             messagebox.showinfo("Info", f"Successfully connected to {robot_number} as {auth_code}!")
@@ -69,6 +75,7 @@ class RestApiGui:
         self.clear_window()
         self.root.title("MiR Data Collection")
         self.place_to_center_tool(450, 400)
+        self.create_top_menu()
 
         left_frame = tk.Frame(self.root)
         left_frame.pack(side=tk.LEFT, anchor='nw', padx=10, pady=10)
@@ -155,6 +162,7 @@ class RestApiGui:
         self.clear_window()
         self.root.title("MiR Data Processing")
         self.place_to_center_tool(800, 400)
+        self.create_top_menu()
 
         main_frame = tk.Frame(self.root)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
@@ -203,7 +211,28 @@ class RestApiGui:
         x = (screen_width - width) // 2
         y = (screen_height - height) // 2
         self.root.geometry(f"{width}x{height}+{x}+{y-100}")
-        
+    
+    def create_top_menu(self):
+        top_frame = tk.Frame(self.root, bg="#ddd")
+        top_frame.pack(side=tk.TOP, fill=tk.X)
+
+        self.time_label = tk.Label(top_frame, text="", bg="#ddd", font=("Arial", 12))
+        self.time_label.pack(side=tk.LEFT, padx=10)
+
+        user_info = f"User: {self.logged_user} | Robot: {self.logged_robot}"
+        tk.Label(top_frame, text=user_info, bg="#ddd", font=("Arial", 12)).pack(side=tk.LEFT, padx=10)
+
+        logout_button = tk.Button(top_frame, text="Logout", command=self.create_login_ui)
+        logout_button.pack(side=tk.RIGHT, padx=10)
+
+        self.update_time()
+
+    def update_time(self):
+        if hasattr(self, 'time_label') and self.time_label.winfo_exists():
+            current_time = datetime.now().strftime("%H:%M:%S")
+            self.time_label.config(text=f"Time: {current_time}")
+            self.root.after(1000, self.update_time)
+            
     def clear_window(self):
         for widget in self.root.winfo_children():
             widget.destroy()
