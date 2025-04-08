@@ -4,6 +4,7 @@ import socket
 import json
 import csv 
 from datetime import datetime
+import time 
 
 MIR_IP_100 = "192.168.1.100" 
 MIR_IP_250 = "192.168.1.250"
@@ -74,6 +75,28 @@ def getData(command):
         print(f"Error in fetching data from {active_ip_address}: {e}")
         return False
     
+def getDesiredData():    
+    mission_command = "mission"
+    activeMission_status = getData(mission_command)
+
+    if not activeMission_status:
+        print("No active mission found.")
+        return None, True
+    
+    data_command =  "experimental/diagnostics"   
+    mir_data = getData(data_command)    
+    if not mir_data:
+        print("⚠️ Failed to retrieve data.")
+        return None, False
+
+    brake_info = mir_data.get("/Motors/Brake", {}).get("values", {})
+
+    voltage = brake_info.get("Voltage", "N/A")
+    temperature = brake_info.get("Board temperature", "N/A")
+
+    print(f"🔋 Voltage: {voltage} V | 🌡️ Temp: {temperature} °C")
+    return (voltage, temperature), False
+    
 
 #############################################################################################
 # Functions for FE
@@ -111,58 +134,126 @@ def close_connection(client):
         print(f"Error while closing connection: {e}")
         return False
     
-def get_maps():
+def get_all_maps():
     command = "maps"
     
     response = getData(command)
+    if not response:
+        print("Could not retrieve maps.")
+        return []
+    
+    # vyhledávání map, která nás zajímají 
+    preferred_maps = ["map1", "map2", "map3"]  # Příklad preferovaných map
+    filtered_maps = [
+        {"name": m["name"], "guid": m["guid"]}
+        for m in response
+        if m.get("name") in preferred_maps
+    ]
 
-    return list(response)
+    return filtered_maps
 
-def get_missions():
+def get_all_missions():
     command = "missions"
     
     response = getData(command)
+    if not response:
+        print("Could not retrieve missions.")
+        return []
     
-    return list(response)
+    # vyhledávání misí, která nás zajímají
+    preferred_missions = ["StartMission", "ChargeBattery", "DeliveryA", "Dny otevřených dveří"]
+    filtered_missions = [
+        {"name": m["name"], "guid": m["guid"]}
+        for m in response
+        if m.get("name") in preferred_missions
+    ]
 
-def start_mission(map, mission):
-    start = 
+    return filtered_missions
 
-    if start == True:
-        return True
-    else:
+def set_map(active_ip_address, map_id):
+    command = "status"
+    url = f"http://{active_ip_address}/api/v2.0.0/{command}"
+
+    payload = {
+        "map_id": map_id
+    }
+
+    try:
+        response = requests.put(url, headers=HEADERS, json=payload)
+        if response.status_code == 200:
+            print("🗺️ Map successfully set as active.")
+            return True
+        else:
+            print(f"❌ Failed to set map. Status code: {response.status_code}")
+            print("Response:", response.text)
+            return False
+    except Exception as e:
+        print(f"❌ Error setting map: {e}")
         return False
-        print("Error starting mission.")
 
-def stop_mission():
-    stop = 
+def start_mission(active_ip_address, mission_id):
+    command = "mission_queue"
+    url = f"http://{active_ip_address}/api/v2.0.0/{command}"
 
-    if stop == True:
-        return True
-    else:
-        print("Error starting mission.")
+    payload = {
+        "mission_id": mission_id
+    }
+
+    try:
+        response = requests.post(url, headers=HEADERS, json=payload)
+        if response.status_code == 201:
+            print("✅ Mission successfully started!")
+            return True
+        else:
+            print(f"❌ Failed to start mission. Status code: {response.status_code}")
+            print("Response:", response.text)
+            return False
+    except Exception as e:
+        print(f"❌ Error starting mission: {e}")
+        return False
+        
+
+def delete_mission_queue(active_ip_address):
+    command = "mission_queue"
+    url = f"http://{active_ip_address}/api/v2.0.0/{command}"
+     
+    try:
+        response = requests.delete(url, headers=HEADERS)
+        if response.status_code == 204:
+            print("🛑 Mission(s) successfully stopped.")
+            return True
+        else:
+            print(f"❌ Failed to stop missions. Status code: {response.status_code}")
+            print("Response:", response.text)
+            return False
+    except Exception as e:
+        print(f"❌ Error stopping missions: {e}")
         return False
 
-def getDesiredData():    
-    mission_command = "mission"
-    activeMission = getData(mission_command)
+def measure_data_during_mission(interval_seconds = 5, timeout_seconds = 300):
+    start_time = time.time()
+    voltage_data = []
+    temperature_data = []
 
-    if activeMission == True:
-        data_command =  "experimental/diagnostics"       
-        mir_data = getData(data_command)
-    
-        if "/Motors/Brake" in mir_data and "values" in mir_data["/Motors/Brake"]:
-            voltage = mir_data["/Motors/Brake"]["values"].get("Voltage", "N/A")
-            board_temperature = mir_data["/Motors/Brake"]["values"].get("Board temperature", "N/A")
-            print(f"Voltage: {voltage} V")
-            print(f"Board temperature: {board_temperature} °C")
-            dataVoltage.append(voltage)
-            dataTemperature.append(board_temperature)
-            print("Data successfully retrieved.")
-        return dataVoltage, False
-    else: 
-        print("Data for /Motors/Brake not found.")
-        return list[0], True
+    while True:
+        elapsed = time.time() - start_time
+        if elapsed > timeout_seconds:
+            print("⏱️ Timeout reached, stopping measurement.")
+            break
+
+        result, mission_finished = getDesiredData()
+        if mission_finished:
+            print("✅ Mission ended.")
+            break
+
+        if result:
+            voltage, temp = result
+            voltage_data.append(voltage)
+            temperature_data.append(temp)
+
+        time.sleep(interval_seconds)
+
+    return voltage_data, temperature_data
 
 def save_to_json(data, fileName, folder):
     try:
