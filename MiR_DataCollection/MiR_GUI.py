@@ -110,51 +110,71 @@ class RestApiGui:
 
     def download_data(self):
         
-        maps = MiR_BE_TEMPORARY.get_map()
+        maps = MiR_BE_TEMPORARY.get_all_maps()
         if not maps:
             messagebox.showerror("Error", "Failed to retrieve maps.")
             return
         
-        missions = MiR_BE_TEMPORARY.get_mission()
+        missions = MiR_BE_TEMPORARY.get_all_missions()
         if not missions:
             messagebox.showerror("Error", "Failed to retrieve missions.")
             return
-      
+
         self.maps = maps
         self.missions = missions
 
+        # Vymazání listboxu
         self.dataMaps_listbox.delete(1.0, tk.END)
 
+        # Vložení map
         self.dataMaps_listbox.insert(tk.END, "Maps:\n")
-        for map_item in self.maps:
-            self.dataMaps_listbox.insert(tk.END, f"{map_item}\n")
+        for m in self.maps:
+            self.dataMaps_listbox.insert(tk.END, f"- {m['name']} (GUID: {m['guid']})\n")
 
+        # Oddělení
+        self.dataMaps_listbox.insert(tk.END, "\n----------------\n\n")
         self.dataMaps_listbox.insert(tk.END, "\nMissions:\n")
-        for mission_item in self.missions:
-            self.dataMaps_listbox.insert(tk.END, f"{mission_item}\n")
 
+        # Vložení misí
+        for m in self.missions:
+            self.dataMaps_listbox.insert(tk.END, f"- {m['name']} (GUID: {m['guid']})\n")
+
+        # Update map_menu
         self.map_menu['menu'].delete(0, 'end')
-        for map_item in self.maps:
-            self.map_menu['menu'].add_command(label=map_item, command=tk._setit(self.map_var, map_item))
+        for m in self.maps:
+            self.map_menu['menu'].add_command(label=m['name'], command=tk._setit(self.map_var, m['name']))
 
+        # Update mission_menu
         self.mission_menu['menu'].delete(0, 'end')
-        for mission_item in self.missions:
-            self.mission_menu['menu'].add_command(label=mission_item, command=tk._setit(self.mission_var, mission_item))
+        for m in self.missions:
+            self.mission_menu['menu'].add_command(label=m['name'], command=tk._setit(self.mission_var, m['name']))
+
 
     def startMission(self):   
-        map = self.map_var.get()
-        mission = self.mission_var.get()
+        map_id = self.map_var.get()
+        mission_id = self.mission_var.get()
 
-        if not map or not mission:
+        if not map or not map_id:
           messagebox.showerror("Error", "Please select both Map and Mission.")
           return
-      
-        success = MiR_BE_TEMPORARY.start_mission(map, mission)
-        if not success:
-          messagebox.showerror("Error", f"Failed to start map: {map} and mission: {mission}.")
+
+        if not map or not mission_id:
+          messagebox.showerror("Error", "Please select both Map and Mission.")
           return
-        if success:
-          messagebox.showinfo("Error", f"Successfully started map: {map} and mission: {mission}.")
+        
+        map_success = MiR_BE_TEMPORARY.set_map(map_id)
+        mission_success = MiR_BE_TEMPORARY.start_mission(mission_id)
+
+  
+        if not map_success:
+          messagebox.showerror("Error", f"Failed to set map: {map_id}.")
+          return
+        if not mission_success:
+          messagebox.showerror("Error", f"Failed to set mission: {mission_id}.")
+          return
+        
+        if mission_success and map_success:
+          messagebox.showinfo("Info", f"Successfully started map: {map_id} and mission: {mission_id}.")
           self.process_data_ui()
 
 
@@ -164,45 +184,55 @@ class RestApiGui:
         self.place_to_center_tool(800, 400)
         self.create_top_menu()
 
+        self.active_category = self.data_categories[0]  # Výchozí kategorie
+
         main_frame = tk.Frame(self.root)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
         left_frame = tk.Frame(main_frame)
         left_frame.pack(side=tk.LEFT, fill=tk.Y, padx=10, pady=10)
 
-        # Nadpis
         tk.Label(left_frame, text="Select Data:", font=("Arial", 14, "bold")).pack(pady=(0, 10))
 
-        # Dynamické tlačítka pod sebe
         for item in self.data_categories:
-            tk.Button(left_frame, text=item, command=lambda i=item: self.update_plot(i), width=20).pack(pady=2)
+            tk.Button(left_frame, text=item, command=lambda i=item: self.change_category(i), width=20).pack(pady=2)
 
-        # Listbox pod tlačítky
         self.listbox = tk.Listbox(left_frame, height=20, width=30)
         self.listbox.pack(pady=10, fill=tk.BOTH, expand=True)
 
-        # Pravá část - Graf
         self.figure, self.ax = plt.subplots()
         self.canvas = FigureCanvasTkAgg(self.figure, master=main_frame)
         self.canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
-        # Načtení grafu s default daty
-        self.update_plot(self.data_categories[0])
+        self.update_plot()  # Spuštění automatického refreshu
 
 
-    def update_plot(self, category):
-        """Aktualizuje listbox a graf pro vybranou kategorii."""
+    def change_category(self, category):
+        """Změní aktivní kategorii."""
+        self.active_category = category
+
+
+    def update_plot(self):
+        """Aktualizuje listbox a graf pro aktivní kategorii."""
+        # Získání nových dat pro vybranou kategorii
+        values = MiR_BE_TEMPORARY.measure_data_during_mission(self.active_category)
+        
+        # Aktualizace listboxu
         self.listbox.delete(0, tk.END)
-        values = self.data[category]
         for val in values:
             self.listbox.insert(tk.END, val)
-        
+
+        # Aktualizace grafu
         self.ax.clear()
         self.ax.plot(values, marker='o', linestyle='-')
-        self.ax.set_title(category)
+        self.ax.set_title(self.active_category)
         self.ax.set_ylabel("Value")
         self.ax.set_xlabel("Time")
         self.canvas.draw()
+
+        # Obnovit za 1000 ms (1s)
+        self.root.after(1000, self.update_plot)
+
 
 
     def place_to_center_tool(self, width, height):
@@ -222,10 +252,20 @@ class RestApiGui:
         user_info = f"User: {self.logged_user} | Robot: {self.logged_robot}"
         tk.Label(top_frame, text=user_info, bg="#ddd", font=("Arial", 12)).pack(side=tk.LEFT, padx=10)
 
-        logout_button = tk.Button(top_frame, text="Logout", command=self.create_login_ui)
+        logout_button = tk.Button(top_frame, text="Logout", command=self.disconnect)
         logout_button.pack(side=tk.RIGHT, padx=10)
 
-        self.update_time()
+        self.update_time()      
+
+    def disconnect(self):
+        success = MiR_BE_TEMPORARY.close_connection()
+        if not success:
+            messagebox.showerror("Error", f"Failed to Disconnect!.")
+            return
+        
+        if success:
+            messagebox.showinfo("Info", f"Successfully Disconnected!")
+            self.create_login_ui()
 
     def update_time(self):
         if hasattr(self, 'time_label') and self.time_label.winfo_exists():
