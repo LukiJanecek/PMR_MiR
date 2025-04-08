@@ -29,12 +29,17 @@ API_KEY = "your_api_key_here"
 fileDirectory = "Data/MIR_data"
 
 activeRobot = None
+active_ip_address = None
 activeAuthKey = None
+client_socket = None
+
+voltage_data = []
+temperature_data = []
 
 HEADERS = {"Authorization": f"{activeAuthKey}", "Content-Type": "application/json"}
 
-dataVoltage : list = []
-dataTemperature : list = []
+dataBreaksVoltage : list = []
+dataBreaksTemperature : list = []
 
 #############################################################################################
 # Functions for BE
@@ -46,7 +51,7 @@ def connect_to_ip(ip_address, port, api_key):
         authorization_request = f"GET / HTTP/1.1\r\nHost: {ip_address}\r\nAuthorization: Bearer {api_key}\r\n\r\n"
         client_socket.sendall(authorization_request.encode('utf-8'))
         response = client_socket.recv(4096).decode('utf-8')
-        return client_socket  
+        return True  
     except socket.error as e:
         print(f"Error in connection: {e}")
         return False
@@ -121,10 +126,10 @@ def connect_to_robot(robot_number, auth_key):
         print(f"Socket error: {e}")
         return False
 
-def close_connection(client):
+def close_connection():
     try:
-        if client:
-            client.close()
+        if client_socket:
+            client_socket.close()
             print("Connection closed.")
             return True
         else:
@@ -143,7 +148,7 @@ def get_all_maps():
         return []
     
     # vyhledávání map, která nás zajímají 
-    preferred_maps = ["map1", "map2", "map3"]  # Příklad preferovaných map
+    preferred_maps = ["KAS0249", "map2", "map3"]  # Příklad preferovaných map
     filtered_maps = [
         {"name": m["name"], "guid": m["guid"]}
         for m in response
@@ -170,7 +175,7 @@ def get_all_missions():
 
     return filtered_missions
 
-def set_map(active_ip_address, map_id):
+def set_map(map_id):
     command = "status"
     url = f"http://{active_ip_address}/api/v2.0.0/{command}"
 
@@ -179,7 +184,7 @@ def set_map(active_ip_address, map_id):
     }
 
     try:
-        response = requests.put(url, headers=HEADERS, json=payload)
+        response = requests.put(url, headers = HEADERS, json=payload)
         if response.status_code == 200:
             print("🗺️ Map successfully set as active.")
             return True
@@ -191,7 +196,7 @@ def set_map(active_ip_address, map_id):
         print(f"❌ Error setting map: {e}")
         return False
 
-def start_mission(active_ip_address, mission_id):
+def start_mission(mission_id):    
     command = "mission_queue"
     url = f"http://{active_ip_address}/api/v2.0.0/{command}"
 
@@ -200,7 +205,7 @@ def start_mission(active_ip_address, mission_id):
     }
 
     try:
-        response = requests.post(url, headers=HEADERS, json=payload)
+        response = requests.post(url, headers = HEADERS, json=payload)
         if response.status_code == 201:
             print("✅ Mission successfully started!")
             return True
@@ -213,12 +218,12 @@ def start_mission(active_ip_address, mission_id):
         return False
         
 
-def delete_mission_queue(active_ip_address):
+def delete_mission_queue():
     command = "mission_queue"
     url = f"http://{active_ip_address}/api/v2.0.0/{command}"
      
     try:
-        response = requests.delete(url, headers=HEADERS)
+        response = requests.delete(url, headers = HEADERS)
         if response.status_code == 204:
             print("🛑 Mission(s) successfully stopped.")
             return True
@@ -230,34 +235,23 @@ def delete_mission_queue(active_ip_address):
         print(f"❌ Error stopping missions: {e}")
         return False
 
-def measure_data_during_mission(interval_seconds = 5, timeout_seconds = 300):
-    start_time = time.time()
-    voltage_data = []
-    temperature_data = []
+def dataMeasuring():
+    result, mission_finished = getDesiredData()
+        
+    if mission_finished:
+        print("✅ Mission ended.")
+        return mission_finished, [], []
 
-    while True:
-        elapsed = time.time() - start_time
-        if elapsed > timeout_seconds:
-            print("⏱️ Timeout reached, stopping measurement.")
-            break
+    if result:
+        voltage, temp = result
+        dataBreaksVoltage.append(voltage)
+        dataBreaksTemperature.append(temp)
 
-        result, mission_finished = getDesiredData()
-        if mission_finished:
-            print("✅ Mission ended.")
-            break
-
-        if result:
-            voltage, temp = result
-            voltage_data.append(voltage)
-            temperature_data.append(temp)
-
-        time.sleep(interval_seconds)
-
-    return voltage_data, temperature_data
+    return mission_finished, dataBreaksVoltage, dataBreaksTemperature
 
 def save_to_json(data, fileName, folder):
     try:
-        os.makedirs(folder, exist_ok=True)  # Vytvoří složku, pokud neexistuje
+        os.makedirs(folder, exist_ok = True)  # Vytvoří složku, pokud neexistuje
         full_path = os.path.join(folder, f"{fileName}.json")
         
         with open(full_path, 'w') as json_file:
@@ -270,7 +264,7 @@ def save_to_json(data, fileName, folder):
 
 def save_to_csv(data, fileName, folder):
     try:
-        os.makedirs(folder, exist_ok=True)  # Vytvoří složku, pokud neexistuje
+        os.makedirs(folder, exist_ok = True)  # Vytvoří složku, pokud neexistuje
         full_path = os.path.join(folder, f"{fileName}.csv")
         
         with open(full_path, mode='w', newline='') as csv_file:
