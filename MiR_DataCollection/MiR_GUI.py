@@ -1,5 +1,5 @@
-#import MiR_BE
-import MiR_BE_TEMPORARY
+import MiR_BE
+#import MiR_BE_TEMPORARY
 
 import tkinter as tk
 from tkinter import messagebox
@@ -19,17 +19,14 @@ class RestApiGui:
         self.root = root
         self.root.title("MiR REST API GUI")
 
-        self.data = {
-            "Temperature": [10, 15, 20, 25, 30],
-            "Brakes": [101, 102, 100, 99, 101],
-            "Speed": [30, 40, 50, 60, 70]
-        }
 
-        self.data_categories = list(self.data.keys())
-        #self.data_categories = ["Category 1", "Category 2", "Category 3"]
+        #self.data_categories = list(self.data.keys())
+        self.data_categories = ["Brakes", "Temperature", "Voltage"]
 
         self.logged_user = None
         self.logged_robot = None
+
+        self.plot_updater = None  # slouží pro uchování ID after() cyklu
 
         self.place_to_center_tool(250, 170)
         self.create_login_ui()
@@ -55,19 +52,27 @@ class RestApiGui:
         self.connect_button.pack(pady=10)
 
     def try_connect(self, auth_code, robot_number):
+        
+        if robot_number == "MiR100":
+            robot_number = "100"
+        elif robot_number == "MiR250":
+            robot_number = "250"
+        elif robot_number == "MiR500":
+            robot_number = "500"
+
         if not auth_code or not robot_number:
             messagebox.showerror("Error", "Please select both Role and Robot.")
             return
       
-        success = MiR_BE_TEMPORARY.connect_to_robot(auth_code, robot_number)
+        success = MiR_BE.connect_to_robot(robot_number, auth_code)
         if not success:
             messagebox.showerror("Error", f"Failed to connect to {robot_number} as {auth_code}.")
-            self.logged_user = auth_code
-            self.logged_robot = robot_number
-
             return
+        
         if success:
             messagebox.showinfo("Info", f"Successfully connected to {robot_number} as {auth_code}!")
+            self.logged_user = auth_code
+            self.logged_robot = robot_number
             self.main_data_ui()
 
         
@@ -110,14 +115,14 @@ class RestApiGui:
 
     def download_data(self):
         
-        maps = MiR_BE_TEMPORARY.get_all_maps()
+        maps = MiR_BE.get_all_maps()
         if not maps:
-            messagebox.showerror("Error", "Failed to retrieve maps.")
+            messagebox.showerror("Error", "Failed to get maps.")
             return
         
-        missions = MiR_BE_TEMPORARY.get_all_missions()
+        missions = MiR_BE.get_all_missions()
         if not missions:
-            messagebox.showerror("Error", "Failed to retrieve missions.")
+            messagebox.showerror("Error", "Failed to get missions.")
             return
 
         self.maps = maps
@@ -162,8 +167,8 @@ class RestApiGui:
           messagebox.showerror("Error", "Please select both Map and Mission.")
           return
         
-        map_success = MiR_BE_TEMPORARY.set_map(map_id)
-        mission_success = MiR_BE_TEMPORARY.start_mission(mission_id)
+        map_success = MiR_BE.set_map(map_id)
+        mission_success = MiR_BE.start_mission(mission_id)
 
   
         if not map_success:
@@ -208,14 +213,14 @@ class RestApiGui:
 
 
     def change_category(self, category):
-        """Změní aktivní kategorii."""
         self.active_category = category
 
 
     def update_plot(self):
-        """Aktualizuje listbox a graf pro aktivní kategorii."""
         # Získání nových dat pro vybranou kategorii
-        values = MiR_BE_TEMPORARY.measure_data_during_mission(self.active_category)
+        #values = MiR_BE.measure_data_during_mission(self.active_category)
+        values = MiR_BE.measure_data_during_mission()
+        
         
         # Aktualizace listboxu
         self.listbox.delete(0, tk.END)
@@ -231,7 +236,7 @@ class RestApiGui:
         self.canvas.draw()
 
         # Obnovit za 1000 ms (1s)
-        self.root.after(1000, self.update_plot)
+        self.plot_updater = self.root.after(1000, self.update_plot)
 
 
 
@@ -252,18 +257,23 @@ class RestApiGui:
         user_info = f"User: {self.logged_user} | Robot: {self.logged_robot}"
         tk.Label(top_frame, text=user_info, bg="#ddd", font=("Arial", 12)).pack(side=tk.LEFT, padx=10)
 
-        logout_button = tk.Button(top_frame, text="Logout", command=self.disconnect)
+        logout_button = tk.Button(top_frame, text="LogOut", command=self.disconnect)
         logout_button.pack(side=tk.RIGHT, padx=10)
 
         self.update_time()      
 
     def disconnect(self):
-        success = MiR_BE_TEMPORARY.close_connection()
+        success = MiR_BE.close_connection()
         if not success:
             messagebox.showerror("Error", f"Failed to Disconnect!.")
             return
         
         if success:
+            # Zrušíme cyklus update_plot, pokud běží
+            if self.plot_updater:
+                self.root.after_cancel(self.plot_updater)
+                self.plot_updater = None
+                
             messagebox.showinfo("Info", f"Successfully Disconnected!")
             self.create_login_ui()
 
@@ -280,5 +290,14 @@ class RestApiGui:
 if __name__ == "__main__":
     root = tk.Tk()
     app = RestApiGui(root)
+
+    # Správné ukončení programu při kliknutí na křížek
+    def on_closing():
+        if messagebox.askokcancel("Quit", "Do you want to quit?"):
+            if app.plot_updater:
+                root.after_cancel(app.plot_updater)
+            root.destroy()
+
+    root.protocol("WM_DELETE_WINDOW", on_closing)
     root.mainloop()
 
