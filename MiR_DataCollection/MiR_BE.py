@@ -6,51 +6,18 @@ import csv
 from datetime import datetime
 import time 
 
-MIR_IP_100 = "192.168.1.100" 
-MIR_IP_250 = "192.168.1.250"
-MIR_IP_251 = "192.168.1.251"
-MIR_IP_500 = "192.168.1.150" 
-MIR_port = 443 
-MIR_100_url = f"http://{MIR_IP_100}:{MIR_port}"
-MIR_250_url = f"http://{MIR_IP_250}:{MIR_port}"
-MIR_251_url = f"http://{MIR_IP_251}:{MIR_port}"
-MIR_500_url = f"http://{MIR_IP_500}:{MIR_port}"
-authorization_code_student = "Basic c3R1ZGVudDoyNjRjOGMzODFiZjE2Yzk4MmE0ZTU5YjBkZDRjNmY3ODA4YzUxYTA1ZjY0YzM1ZGI0MmNjNzhhMmE3Mjg3NWJi"
-authorization_code_admin = "Basic YWRtaW46OGM2OTc2ZTViNTQxMDQxNWJkZTkwOGJkNGRlZTE1ZGZiMTY3YTljODczZmM0YmI4YTgxZjZmMmFiNDQ4YTkxOA=="
-authorization_code_distributor = "Basic ZGlzdHJpYnV0b3I6NjJmMmYwZjFlZmYxMGQzMTUyYzk1ZjZmMDU5NjU3NmU0ODJiYjhlNDQ4MDY0MzNmNGNmOTI5NzkyODM0YjAxNA=="
-usernameStudent = "student"
-passwordStudent = "student"
-usernameAdmin = "admin"
-passwordAdmin = "admin"
-usernameDistributor = "distributor"
-passwordDistributor = "distributor"
-API_KEY = "your_api_key_here" 
-
-fileDirectory = "Data/MIR_data"
-
-activeRobot = None
-active_ip_address = None
-activeAuthKey = None
-client_socket = None
-
-voltage_data = []
-temperature_data = []
-
-HEADERS = {"Authorization": f"{activeAuthKey}", "Content-Type": "application/json"}
-
-dataBreaksVoltage : list = []
-dataBreaksTemperature : list = []
+import MiR_parameters as param
 
 #############################################################################################
 # Functions for BE
 def connect_to_ip(ip_address, port, api_key):
     try:
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect((ip_address, port))
+        param.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        param.client_socket.connect((ip_address, port))
         print(f"Connected to {ip_address}:{port}")
         authorization_request = f"GET / HTTP/1.1\r\nHost: {ip_address}\r\nAuthorization: Bearer {api_key}\r\n\r\n"
-        client_socket.sendall(authorization_request.encode('utf-8'))
-        response = client_socket.recv(4096).decode('utf-8')
+        param.client_socket.sendall(authorization_request.encode('utf-8'))
+        response = param.client_socket.recv(4096).decode('utf-8')
         return True  
     except socket.error as e:
         print(f"Error in connection: {e}")
@@ -58,26 +25,29 @@ def connect_to_ip(ip_address, port, api_key):
     
 def getData(command):
     try:
-        if activeRobot == "100":
-            active_ip_address = MIR_IP_100
-        elif activeRobot == "250":
-            active_ip_address = MIR_IP_250
-        elif activeRobot == "251":
-            active_ip_address = MIR_IP_251
-        elif activeRobot == "500":
-            active_ip_address = MIR_IP_500
+        if param.activeRobot == "100":
+            param.active_ip_address = param.MIR_IP_100
+        elif param.activeRobot == "250":
+            param.active_ip_address = param.MIR_IP_250
+        elif param.activeRobot == "251":
+            param.active_ip_address = param.MIR_IP_251
+        elif param.activeRobot == "500":
+            param.active_ip_address = param.MIR_IP_500
         else:
             print("Invalid robot number. Available options: 500, 251, 250, 100.")
             return False
         
-        url = f"http://{active_ip_address}/api/v2.0.0/{command}"
+        url = f"http://{param.active_ip_address}/api/v2.0.0/{command}"
+        print(url)
         
+        HEADERS = {"Authorization": f"{param.activeAuthKey}", "Content-Type": "application/json"}
+
         response = requests.get(url, headers = HEADERS)
         response.raise_for_status()
         data = response.json()
         return data
     except requests.exceptions.RequestException as e:
-        print(f"Error in fetching data from {active_ip_address}: {e}")
+        print(f"Error in fetching data from {param.active_ip_address}: {e}")
         return False
     
 def getDesiredData():    
@@ -108,17 +78,26 @@ def getDesiredData():
 
 def connect_to_robot(robot_number, auth_key):
     try:
-        activeRobot = robot_number
-        activeAuthKey = auth_key
+        param.activeRobot = robot_number
+
+        if auth_key == "student":
+            param.activeAuthKey = param.authorization_code_student
+        elif auth_key == "admin":
+            param.activeAuthKey = param.authorization_code_admin
+        elif auth_key == "distributor":
+            param.activeAuthKey = param.authorization_code_distributor
+        else:
+            print("Invalid authorization key. Available options: student, admin, distributor.")
+            return False
         
-        if activeRobot == "100":
-            return connect_to_ip(MIR_IP_100, MIR_port, activeAuthKey)
-        elif activeRobot == "250":
-            return connect_to_ip(MIR_IP_250, MIR_port, activeAuthKey)
-        elif activeRobot == "251":
-            return connect_to_ip(MIR_IP_251, MIR_port, activeAuthKey)
-        elif activeRobot == "500":
-            return connect_to_ip(MIR_IP_500, MIR_port, activeAuthKey)
+        if param.activeRobot == "100":
+            return connect_to_ip(param.MIR_IP_100, param.MIR_port, param.activeAuthKey)
+        elif param.activeRobot == "250":
+            return connect_to_ip(param.MIR_IP_250, param.MIR_port, param.activeAuthKey)
+        elif param.activeRobot == "251":
+            return connect_to_ip(param.MIR_IP_251, param.MIR_port, param.activeAuthKey)
+        elif param.activeRobot == "500":
+            return connect_to_ip(param.MIR_IP_500, param.MIR_port, param.activeAuthKey)
         else:
             print("Invalid robot number. Available options: 500, 251, 250, 100.")
             return False
@@ -128,8 +107,8 @@ def connect_to_robot(robot_number, auth_key):
 
 def close_connection():
     try:
-        if client_socket:
-            client_socket.close()
+        if param.client_socket:
+            param.client_socket.close()
             print("Connection closed.")
             return True
         else:
@@ -166,7 +145,7 @@ def get_all_missions():
         return []
     
     # vyhledávání misí, která nás zajímají
-    preferred_missions = ["StartMission", "ChargeBattery", "DeliveryA", "Dny otevřených dveří"]
+    preferred_missions = ["KAS0249", "ChargeBattery", "DeliveryA", "Dny otevřených dveří"]
     filtered_missions = [
         {"name": m["name"], "guid": m["guid"]}
         for m in response
@@ -177,13 +156,14 @@ def get_all_missions():
 
 def set_map(map_id):
     command = "status"
-    url = f"http://{active_ip_address}/api/v2.0.0/{command}"
+    url = f"http://{param.active_ip_address}/api/v2.0.0/{command}"
 
     payload = {
         "map_id": map_id
     }
 
     try:
+        HEADERS = {"Authorization": f"{param.activeAuthKey}", "Content-Type": "application/json"}
         response = requests.put(url, headers = HEADERS, json=payload)
         if response.status_code == 200:
             print("🗺️ Map successfully set as active.")
@@ -198,13 +178,14 @@ def set_map(map_id):
 
 def start_mission(mission_id):    
     command = "mission_queue"
-    url = f"http://{active_ip_address}/api/v2.0.0/{command}"
+    url = f"http://{param.active_ip_address}/api/v2.0.0/{command}"
 
     payload = {
         "mission_id": mission_id
     }
 
     try:
+        HEADERS = {"Authorization": f"{param.activeAuthKey}", "Content-Type": "application/json"}
         response = requests.post(url, headers = HEADERS, json=payload)
         if response.status_code == 201:
             print("✅ Mission successfully started!")
@@ -220,9 +201,10 @@ def start_mission(mission_id):
 
 def delete_mission_queue():
     command = "mission_queue"
-    url = f"http://{active_ip_address}/api/v2.0.0/{command}"
+    url = f"http://{param.active_ip_address}/api/v2.0.0/{command}"
      
     try:
+        HEADERS = {"Authorization": f"{param.activeAuthKey}", "Content-Type": "application/json"}
         response = requests.delete(url, headers = HEADERS)
         if response.status_code == 204:
             print("🛑 Mission(s) successfully stopped.")
@@ -240,14 +222,14 @@ def dataMeasuring():
         
     if mission_finished:
         print("✅ Mission ended.")
-        return mission_finished, [], []
+        return mission_finished
 
     if result:
         voltage, temp = result
-        dataBreaksVoltage.append(voltage)
-        dataBreaksTemperature.append(temp)
+        param.dataBreaksVoltage.append(voltage)
+        param.dataBreaksTemperature.append(temp)
 
-    return mission_finished, dataBreaksVoltage, dataBreaksTemperature
+    return param.dataBreaksVoltage
 
 def save_to_json(data, fileName, folder):
     try:

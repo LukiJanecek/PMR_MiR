@@ -224,12 +224,12 @@ class RestApiGui:
     def update_plot(self):
         # Získání nových dat pro vybranou kategorii
         #values = MiR_BE.measure_data_during_mission(self.active_category)
-        values = MiR_BE.measure_data_during_mission()
-        
+        values = MiR_BE.dataMeasuring()
         
         # Aktualizace listboxu
         self.listbox.delete(0, tk.END)
         for val in values:
+            print("Measured values:", values)
             self.listbox.insert(tk.END, val)
 
         # Aktualizace grafu
