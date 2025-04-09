@@ -54,17 +54,17 @@ class RestApiGui:
     def try_connect(self, auth_code, robot_number):
         
         if robot_number == "MiR100":
-            robot_number = "100"
+            robot_number_id = "100"
         elif robot_number == "MiR250":
-            robot_number = "250"
+            robot_number_id = "250"
         elif robot_number == "MiR500":
-            robot_number = "500"
+            robot_number_id = "500"
 
         if not auth_code or not robot_number:
             messagebox.showerror("Error", "Please select both Role and Robot.")
             return
       
-        success = MiR_BE.connect_to_robot(robot_number, auth_code)
+        success = MiR_BE.connect_to_robot(robot_number_id, auth_code)
         if not success:
             messagebox.showerror("Error", f"Failed to connect to {robot_number} as {auth_code}.")
             return
@@ -273,7 +273,7 @@ class RestApiGui:
             if self.plot_updater:
                 self.root.after_cancel(self.plot_updater)
                 self.plot_updater = None
-                
+
             messagebox.showinfo("Info", f"Successfully Disconnected!")
             self.create_login_ui()
 
