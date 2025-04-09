@@ -156,30 +156,35 @@ class RestApiGui:
 
 
     def startMission(self):   
-        map_id = self.map_var.get()
-        mission_id = self.mission_var.get()
+        selected_map_name = self.map_var.get()
+        selected_mission_name = self.mission_var.get()
 
-        if not map or not map_id:
+        if not map or not selected_map_name:
           messagebox.showerror("Error", "Please select both Map and Mission.")
           return
 
-        if not map or not mission_id:
+        if not map or not selected_mission_name:
           messagebox.showerror("Error", "Please select both Map and Mission.")
           return
+
+        # Najdi GUID pro vybranou mapu
+        map_guid = next((m['guid'] for m in self.maps if m['name'] == selected_map_name), None)
+        mission_guid = next((m['guid'] for m in self.missions if m['name'] == selected_mission_name), None)
+
         
-        map_success = MiR_BE.set_map(map_id)
-        mission_success = MiR_BE.start_mission(mission_id)
+        map_success = MiR_BE.set_map(map_guid)
+        mission_success = MiR_BE.start_mission(mission_guid)
 
   
         if not map_success:
-          messagebox.showerror("Error", f"Failed to set map: {map_id}.")
+          messagebox.showerror("Error", f"Failed to set map: {selected_map_name}.")
           return
         if not mission_success:
-          messagebox.showerror("Error", f"Failed to set mission: {mission_id}.")
+          messagebox.showerror("Error", f"Failed to set mission: {selected_mission_name}.")
           return
         
         if mission_success and map_success:
-          messagebox.showinfo("Info", f"Successfully started map: {map_id} and mission: {mission_id}.")
+          messagebox.showinfo("Info", f"Successfully started map: {selected_map_name} and mission: {selected_mission_name}.")
           self.process_data_ui()
 
 
