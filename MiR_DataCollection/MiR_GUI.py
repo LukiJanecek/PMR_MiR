@@ -222,26 +222,30 @@ class RestApiGui:
 
 
     def update_plot(self):
-        # Získání nových dat pro vybranou kategorii
-        #values = MiR_BE.measure_data_during_mission(self.active_category)
-        values = MiR_BE.dataMeasuring()
-        
+        # Získání nových dat pro vybranou kategorii - ZDE NENI VYBER KATEGORIE
+        finished, values, times = MiR_BE.dataMeasuring()
+
         # Aktualizace listboxu
         self.listbox.delete(0, tk.END)
-        for val in values:
-            print("Measured values:", values)
-            self.listbox.insert(tk.END, val)
+        for val, t in zip(values, times):
+            self.listbox.insert(tk.END, f"{t}: {val}")
 
         # Aktualizace grafu
         self.ax.clear()
-        self.ax.plot(values, marker='o', linestyle='-')
+        self.ax.plot(times, values, marker='o', linestyle='-')
         self.ax.set_title(self.active_category)
         self.ax.set_ylabel("Value")
         self.ax.set_xlabel("Time")
+        self.ax.tick_params(axis='x', rotation=45)
         self.canvas.draw()
 
-        # Obnovit za 1000 ms (1s)
-        self.plot_updater = self.root.after(1000, self.update_plot)
+        # Zastavit aktualizaci, pokud je měření ukončeno
+        if not finished:
+            self.plot_updater = self.root.after(1000, self.update_plot)
+        else:
+            # Návrat do hlavního UI po dokončení měření
+            messagebox.showinfo("Finished", "Data measuring finished.")
+            self.main_data_ui()
 
 
 
