@@ -45,7 +45,7 @@ class RestApiGui:
         tk.Label(self.root, text="Select Robot:").pack()
         self.robot_var = tk.StringVar()
         self.robot_var.set("MiR100")
-        self.robot_menu = tk.OptionMenu(self.root, self.robot_var, "MiR100", "MiR250", "MiR500")
+        self.robot_menu = tk.OptionMenu(self.root, self.robot_var, "MiR100", "MiR250", "MiR251", "MiR500")
         self.robot_menu.pack()
 
         self.connect_button = tk.Button(self.root, text="Connect", command=lambda: self.try_connect(self.auth_var.get(), self.robot_var.get()))
@@ -57,6 +57,8 @@ class RestApiGui:
             robot_number_id = "100"
         elif robot_number == "MiR250":
             robot_number_id = "250"
+        elif robot_number == "MiR251":
+            robot_number_id = "251"
         elif robot_number == "MiR500":
             robot_number_id = "500"
 
