@@ -71,7 +71,60 @@ def getDesiredData():
 
     print(f"🔋 Voltage: {voltage} V | 🌡️ Temp: {temperature} °C")
     return (voltage, temperature), False
+
+def delete_mission_queue():
+    command = "mission_queue"
+    url = f"http://{param.active_ip_address}/api/v2.0.0/{command}"
+     
+    try:
+        HEADERS = {"Authorization": f"{param.activeAuthKey}", "Content-Type": "application/json"}
+        response = requests.delete(url, headers = HEADERS)
+        if response.status_code == 204:
+            print("🛑 Mission(s) successfully stopped.")
+            return True
+        else:
+            print(f"❌ Failed to stop missions. Status code: {response.status_code}")
+            print("Response:", response.text)
+            return False
+    except Exception as e:
+        print(f"❌ Error stopping missions: {e}")
+        return False    
     
+def get_mission_queue():
+    command = "mission_queue"
+    url = f"http://{param.active_ip_address}/api/v2.0.0/{command}"
+    HEADERS = {"Authorization": f"{param.activeAuthKey}", "Content-Type": "application/json"}
+
+    try:
+        response = requests.get(url, headers=HEADERS)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print(f"⚠️ Failed to get mission queue. Status code: {response.status_code}")
+            return None
+    except Exception as e:
+        print(f"❌ Error retrieving mission queue: {e}")
+        return None
+
+def isMissionRunning(mission_id, attempts = 10, delay = 100):
+    for attempt in range(attempts):
+        #time.sleep(delay)
+        queue = get_mission_queue()
+
+        if queue and isinstance(queue, list) and len(queue) > 0:
+            latest_mission = queue[-1]  # kontrolujeme POSLEDNÍ misi ve frontě
+            state = latest_mission.get("state", "").lower()
+
+            print(f"🔍 Last mission in queue state: {state}")
+
+            if state in ["executing", "active", "running"]:
+                return True
+        else:
+            print("⚠️ Mission queue data is empty or invalid.")
+
+    return False
+
+
 
 #############################################################################################
 # Functions for FE
@@ -177,6 +230,10 @@ def set_map(map_id):
         return False
 
 def start_mission(mission_id):    
+    
+    # delete actual queue
+    delete_mission_queue()
+    
     command = "mission_queue"
     url = f"http://{param.active_ip_address}/api/v2.0.0/{command}"
 
@@ -187,9 +244,17 @@ def start_mission(mission_id):
     try:
         HEADERS = {"Authorization": f"{param.activeAuthKey}", "Content-Type": "application/json"}
         response = requests.post(url, headers = HEADERS, json=payload)
+
         if response.status_code == 201:
             print("✅ Mission successfully started!")
-            return True
+
+            # verify mission queue 
+            if isMissionRunning(mission_id):
+                print("🚀 Mission is now running!")
+                return True
+            else:
+                print("❌ Mission not running after multiple checks.")
+                return False
         else:
             print(f"❌ Failed to start mission. Status code: {response.status_code}")
             print("Response:", response.text)
@@ -199,37 +264,21 @@ def start_mission(mission_id):
         return False
         
 
-def delete_mission_queue():
-    command = "mission_queue"
-    url = f"http://{param.active_ip_address}/api/v2.0.0/{command}"
-     
-    try:
-        HEADERS = {"Authorization": f"{param.activeAuthKey}", "Content-Type": "application/json"}
-        response = requests.delete(url, headers = HEADERS)
-        if response.status_code == 204:
-            print("🛑 Mission(s) successfully stopped.")
-            return True
-        else:
-            print(f"❌ Failed to stop missions. Status code: {response.status_code}")
-            print("Response:", response.text)
-            return False
-    except Exception as e:
-        print(f"❌ Error stopping missions: {e}")
-        return False
 
 def dataMeasuring():
     result, mission_finished = getDesiredData()
         
     if mission_finished:
         print("✅ Mission ended.")
-        return mission_finished
+        return mission_finished, param.dataBreaksVoltage, param.dataBreaksTimestamps
 
     if result:
         voltage, temp = result
         param.dataBreaksVoltage.append(voltage)
         param.dataBreaksTemperature.append(temp)
+        param.dataBreaksTimestamps.append(datetime.datetime.now())
 
-    return param.dataBreaksVoltage
+    return mission_finished, param.dataBreaksVoltage, param.dataBreaksTimestamps
 
 def save_to_json(data, fileName, folder):
     try:
