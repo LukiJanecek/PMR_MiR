@@ -28,8 +28,7 @@ client_socket = None
 voltage_data = []
 temperature_data = []
 
-
-
 dataBreaksVoltage : list = []
 dataBreaksTemperature : list = []
+dataBreaksTimestamps : list = []
 

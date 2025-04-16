@@ -1,0 +1,1294 @@
+{
+    "/Computer/PC": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Computer/PC/CPU Load": "CPU load is OK",
+            "/Computer/PC/CPU Temperature": "CPU temperature is OK",
+            "/Computer/PC/Harddrive": "Harddrive is OK",
+            "/Computer/PC/Memory": "Memory is OK"
+        }
+    },
+    "/Computer/PC/CPU Load": {
+        "level": 0,
+        "message": "CPU load is OK",
+        "hardware_id": "PC",
+        "values": {
+            "Average CPU load": "47.2",
+            "Average CPU load (30 second)": "51.4",
+            "Average CPU load (3 minut)": "50.5",
+            "{\"message\": \"Thread %(number)d\", \"args\": {\"number\":0}}": "46.9",
+            "{\"message\": \"Thread %(number)d\", \"args\": {\"number\":1}}": "46.9",
+            "{\"message\": \"Thread %(number)d\", \"args\": {\"number\":2}}": "51",
+            "{\"message\": \"Thread %(number)d\", \"args\": {\"number\":3}}": "44.8"
+        }
+    },
+    "/Computer/PC/CPU Temperature": {
+        "level": 0,
+        "message": "CPU temperature is OK",
+        "hardware_id": "PC",
+        "values": {
+            "Package id 0": "57",
+            "Core 0": "57",
+            "Core 1": "55"
+        }
+    },
+    "/Computer/PC/Harddrive": {
+        "level": 0,
+        "message": "Harddrive is OK",
+        "hardware_id": "PC",
+        "values": {
+            "{\"message\": \"Total size %(unit)s\", \"args\": {\"unit\":\"[GB]\"}}": "55.74",
+            "{\"message\": \"Used %(unit)s\", \"args\": {\"unit\":\"[GB]\"}}": "11.3",
+            "{\"message\": \"Free %(unit)s\", \"args\": {\"unit\":\"[GB]\"}}": "44.44"
+        }
+    },
+    "/Computer/PC/Memory": {
+        "level": 0,
+        "message": "Memory is OK",
+        "hardware_id": "PC",
+        "values": {
+            "{\"message\": \"Total size %(unit)s\", \"args\": {\"unit\":\"[GB]\"}}": "7.61",
+            "{\"message\": \"Used %(unit)s\", \"args\": {\"unit\":\"[GB]\"}}": "3.61",
+            "{\"message\": \"Free %(unit)s\", \"args\": {\"unit\":\"[GB]\"}}": "3.9"
+        }
+    },
+    "/Computer/Network": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Computer/Network/Gateways": "",
+            "/Computer/Network/Master Interface": "{\"message\": \"Active with Slave Interface %(index)d\", \"args\": {\"index\":1}}",
+            "/Computer/Network/Wifi": "Link is up",
+            "/Computer/Network/{\"message\": \"Slave Interface %(index)s\", \"args\": {\"index\":1}}": "Link is up",
+            "/Computer/Network/{\"message\": \"Slave Interface %(index)s\", \"args\": {\"index\":2}}": "Link is down"
+        }
+    },
+    "/Computer/Network/Gateways": {
+        "level": 0,
+        "message": "",
+        "hardware_id": "",
+        "values": {
+            "{\"message\": \"Priority %(gateway)s\", \"args\": {\"gateway\":\"192.168.1.7\"}}": "0"
+        }
+    },
+    "/Computer/Network/Master Interface": {
+        "level": 0,
+        "message": "{\"message\": \"Active with Slave Interface %(index)d\", \"args\": {\"index\":1}}",
+        "hardware_id": "enp_br0",
+        "values": {
+            "Interface name": "enp_br0",
+            "MAC address": "00:01:29:7a:1f:42",
+            "Link status": "up",
+            "IP address": "192.168.12.20",
+            "IP netmask": "255.255.255.0",
+            "Link up count": "1",
+            "Link down count": "1",
+            "Transmit errors": "0",
+            "Receive errors": "0",
+            "Collisions": "0",
+            "{\"message\": \"Transmitted bytes %(unit)s\", \"args\": {\"unit\":\"[MB]\"}}": "434.57",
+            "{\"message\": \"Received bytes %(unit)s\", \"args\": {\"unit\":\"[GB]\"}}": "2.04",
+            "Ethernet link detected": "Yes",
+            "Ethernet link speed [MBit/s]": "100",
+            "Ethernet link duplex": "Half",
+            "Ethernet link auto negotiation": " No",
+            "Ethernet link advertised modes": "",
+            "Ethernet link partner advertised modes": ""
+        }
+    },
+    "/Computer/Network/Wifi": {
+        "level": 0,
+        "message": "Link is up",
+        "hardware_id": "wlp2s0",
+        "values": {
+            "Interface name": "wlp2s0",
+            "MAC address": "00:0e:8e:98:51:ad",
+            "Link status": "up",
+            "IP address": "192.168.1.250",
+            "IP netmask": "255.255.255.0",
+            "Link up count": "1",
+            "Link down count": "1",
+            "Transmit errors": "0",
+            "Receive errors": "0",
+            "Collisions": "0",
+            "{\"message\": \"Transmitted bytes %(unit)s\", \"args\": {\"unit\":\"[GB]\"}}": "1.49",
+            "{\"message\": \"Received bytes %(unit)s\", \"args\": {\"unit\":\"[MB]\"}}": "59.86",
+            "SSID": "MiR",
+            "Access point MAC": "24:4b:fe:c4:a0:80",
+            "Frequency": "2457",
+            "Signal level": "-45"
+        }
+    },
+    "/Computer/Network/{\"message\": \"Slave Interface %(index)s\", \"args\": {\"index\":1}}": {
+        "level": 0,
+        "message": "Link is up",
+        "hardware_id": "enp0s31f6",
+        "values": {
+            "Interface name": "enp0s31f6",
+            "MAC address": "00:01:29:7a:1f:43",
+            "Link status": "up",
+            "Link up count": "1",
+            "Link down count": "1",
+            "Transmit errors": "0",
+            "Receive errors": "0",
+            "Collisions": "0",
+            "{\"message\": \"Transmitted bytes %(unit)s\", \"args\": {\"unit\":\"[MB]\"}}": "438.73",
+            "{\"message\": \"Received bytes %(unit)s\", \"args\": {\"unit\":\"[GB]\"}}": "2.1",
+            "Ethernet link detected": "Yes",
+            "Ethernet link speed [MBit/s]": "100",
+            "Ethernet link duplex": "Full",
+            "Ethernet link auto negotiation": " No",
+            "Ethernet link advertised modes": "TP",
+            "Ethernet link partner advertised modes": ""
+        }
+    },
+    "/Computer/Network/{\"message\": \"Slave Interface %(index)s\", \"args\": {\"index\":2}}": {
+        "level": 0,
+        "message": "Link is down",
+        "hardware_id": "enp1s0",
+        "values": {
+            "Interface name": "enp1s0",
+            "MAC address": "00:01:29:7a:1f:42",
+            "Link status": "down",
+            "Link up count": "0",
+            "Link down count": "1",
+            "Transmit errors": "0",
+            "Receive errors": "0",
+            "Collisions": "0",
+            "{\"message\": \"Transmitted bytes %(unit)s\", \"args\": {\"unit\":\"[B]\"}}": "0",
+            "{\"message\": \"Received bytes %(unit)s\", \"args\": {\"unit\":\"[B]\"}}": "0",
+            "Ethernet link detected": " No",
+            "Ethernet link speed [MBit/s]": "-1",
+            "Ethernet link duplex": "Half",
+            "Ethernet link auto negotiation": "Yes",
+            "Ethernet link advertised modes": "10baseT_Half, 10baseT_Full, 100baseT_Half, 100baseT_Full, 1000baseT_Full, Autoneg, TP",
+            "Ethernet link partner advertised modes": ""
+        }
+    },
+    "/Computer": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "PC": "OK",
+            "Network": "OK"
+        }
+    },
+    "/Modbus": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Modbus/Coils": "No device connected",
+            "/Modbus/Connection": "Modbus Ready and Connected",
+            "/Modbus/Registers": "No device connected"
+        }
+    },
+    "/Modbus/Coils": {
+        "level": 0,
+        "message": "No device connected",
+        "hardware_id": "Modbus",
+        "values": {}
+    },
+    "/Modbus/Connection": {
+        "level": 0,
+        "message": "Modbus Ready and Connected",
+        "hardware_id": "Modbus",
+        "values": {
+            "Host": "0.0.0.0",
+            "Port": "502",
+            "Last Error State": "0",
+            "Error Count": "0",
+            "Command Count": "0"
+        }
+    },
+    "/Modbus/Registers": {
+        "level": 0,
+        "message": "No device connected",
+        "hardware_id": "Modbus",
+        "values": {}
+    },
+    "/Motors": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Motors/Brake": "",
+            "/Motors/Left": "Motor is ok",
+            "/Motors/Right": "Motor is ok"
+        }
+    },
+    "/Motors/Brake": {
+        "level": 0,
+        "message": "",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Voltage": "53.1",
+            "Board temperature": "36",
+            "Left status": "cmd=Braked fb=Braked",
+            "Right status": "cmd=Braked fb=Braked"
+        }
+    },
+    "/Motors/Left": {
+        "level": 0,
+        "message": "Motor is ok",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Status Flag": "Operation Enabled (0x1637)",
+            "Error register": "No Error",
+            "Current actual": "-22",
+            "Encoder count": "-49319507",
+            "I2t motor": "1",
+            "I2t controller": "0",
+            "Controller temperature": "33.6",
+            "Mechanical brake": "Braked(fb=0)"
+        }
+    },
+    "/Motors/Right": {
+        "level": 0,
+        "message": "Motor is ok",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Status Flag": "Operation Enabled (0x1637)",
+            "Error register": "No Error",
+            "Current actual": "-17",
+            "Encoder count": "53060713",
+            "Speed": "0",
+            "I2t motor": "1",
+            "I2t controller": "0",
+            "Controller temperature": "33.6",
+            "Mechanical brake": "Braked(fb=0)"
+        }
+    },
+    "/Powerboard/Diagnostics": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "": "OK"
+        }
+    },
+    "/Powerboard/Diagnostics/Voltage monitor": {
+        "level": 0,
+        "message": "",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Gpio current": "0.000",
+            "MCFuse current": "0.03",
+            "TopFuse current": "0.02",
+            "VIn": "53.1",
+            "Dock": "1.2",
+            "Charger": "1.9",
+            "Bat": "53.1",
+            "Bat Fuse": "53.1",
+            "24V": "23.97",
+            "3v3": "3.275",
+            "TOP fuse": "53.1",
+            "5V0": "4.97",
+            "MC fuse": "53.1",
+            "12V internal": "12.20",
+            "12V input ": "12.86",
+            "5V input": "4.86",
+            "19V": "18.37",
+            "48V brake": "53.4",
+            "48V AI": "0.7",
+            "48V TOP SAFE": "53.1",
+            "Gpio Temperature": "26.0",
+            "Gpio1 Current": "0.000",
+            "Gpio2 Current": "0.000",
+            "Gpio3 Current": "0.000",
+            "Gpio4 Current": "0.000"
+        }
+    },
+    "/Powerboard/Diagnostics/Auto mode switch": {
+        "level": 0,
+        "message": "",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Auto Mode Engaged": "True"
+        }
+    },
+    "/Powerboard/Diagnostics/Battery over current protection": {
+        "level": 0,
+        "message": "",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "TOP Fuse battery protection": "OK - Below 35A"
+        }
+    },
+    "/Powerboard/Diagnostics/Power OK signals": {
+        "level": 0,
+        "message": "",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Internal 12V": "OK",
+            "19V": "OK",
+            "24V": "OK",
+            "24V GPIO/TOP fuse": "OK",
+            "24V PLC fuse": "OK",
+            "48V TOP fuse": "OK",
+            "48V TOP safe fuse": "OK"
+        }
+    },
+    "/Powerboard/Diagnostics/Speaker": {
+        "level": 0,
+        "message": "",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Amplifier state": "OK",
+            "Audio no stretch": "251496",
+            "Audio stretch up": "17321",
+            "Audio stretch down": "0",
+            "Audio FIFO count": "9210",
+            "Audio sequence errors": "20"
+        }
+    },
+    "/Powerboard/Diagnostics/Temperature": {
+        "level": 0,
+        "message": "",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "VBAT_FUSE terminal": "34.9",
+            "VBat terminal": "34.5",
+            "MC FUSE": "35.4",
+            "Charger": "34.5",
+            "24V power supply": "47.5",
+            "Top Fuses": "35.5"
+        }
+    },
+    "/Powerboard/Internal IOs": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Powerboard/Internal IOs/Pendant": "Pendant not connected..",
+            "/Powerboard/Internal IOs/IOs": "Internal IOs are connected"
+        }
+    },
+    "/Powerboard/Internal IOs/Pendant": {
+        "level": 0,
+        "message": "Pendant not connected..",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Joystick forward/reverse [%]": "-",
+            "Joystick left/right [%]": "-",
+            "Up button": "Off",
+            "Down button": "Off"
+        }
+    },
+    "/Powerboard/Internal IOs/IOs": {
+        "level": 0,
+        "message": "Internal IOs are connected",
+        "hardware_id": "Internal IOs",
+        "values": {
+            "Digital output 0": "Off",
+            "Digital output 1": "Off",
+            "Digital output 2": "Off",
+            "Digital output 3": "Off",
+            "Digital Input 0": "Off",
+            "Digital Input 1": "Off",
+            "Digital Input 2": "Off",
+            "Digital Input 3": "Off"
+        }
+    },
+    "/Powerboard/Light control connection": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Powerboard/Light control connection/Powerboard Communication": "Connection OK"
+        }
+    },
+    "/Powerboard/Light control connection/Powerboard Communication": {
+        "level": 0,
+        "message": "Connection OK",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Port": "192.168.12.100:2323",
+            "H/W Revision": "Version: 1.3\n",
+            "Serial number": "ETKS237748R0146MIR-012-F21/07003",
+            "FW Version": "Firmware Revision: 3.6.1-0",
+            "Commands send": "18391",
+            "Messages received": "10617",
+            "Topics received": "278823"
+        }
+    },
+    "/Powerboard/CAN nodes": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Powerboard/CAN nodes/Node ID 03: Right motor": "CAN node is operational",
+            "/Powerboard/CAN nodes/Node ID 04: Left motor": "CAN node is operational",
+            "/Powerboard/CAN nodes/Node ID 10: Corner 0 - head left": "CAN node is operational",
+            "/Powerboard/CAN nodes/Node ID 11: Corner 1 - left front": "CAN node is operational",
+            "/Powerboard/CAN nodes/Node ID 12: Corner 2 - left back": "CAN node is operational",
+            "/Powerboard/CAN nodes/Node ID 13: Corner 3 - tail left": "CAN node is operational",
+            "/Powerboard/CAN nodes/Node ID 14: Corner 4 - tail right": "CAN node is operational",
+            "/Powerboard/CAN nodes/Node ID 15: Corner 5 - right back": "CAN node is operational",
+            "/Powerboard/CAN nodes/Node ID 16: Corner 6 - right front": "CAN node is operational",
+            "/Powerboard/CAN nodes/Node ID 17: Corner 7 - head right": "CAN node is operational",
+            "/Powerboard/CAN nodes/Node ID 20: Brake": "CAN node is operational",
+            "/Powerboard/CAN nodes/Node ID 21: GPIO": "CAN node is operational"
+        }
+    },
+    "/Powerboard/CAN nodes/Node ID 03: Right motor": {
+        "level": 0,
+        "message": "CAN node is operational",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Node type": "Maxon EPOS4",
+            "Node State": "Operational",
+            "Hardware version": "000",
+            "Node SW Version": "140-1-20",
+            "MD5": "Unknown MD5",
+            "Serial number": "0000642184000844"
+        }
+    },
+    "/Powerboard/CAN nodes/Node ID 04: Left motor": {
+        "level": 0,
+        "message": "CAN node is operational",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Node type": "Maxon EPOS4",
+            "Node State": "Operational",
+            "Hardware version": "000",
+            "Node SW Version": "140-1-20",
+            "MD5": "Unknown MD5",
+            "Serial number": "0000642184000854"
+        }
+    },
+    "/Powerboard/CAN nodes/Node ID 10: Corner 0 - head left": {
+        "level": 0,
+        "message": "CAN node is operational",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Node type": "MiR Corner",
+            "Node State": "Operational",
+            "Hardware version": "000",
+            "Node SW Version": "3.6.1-d4",
+            "MD5": "E4D23B21FB45526DFF1F4F1134FF73C9",
+            "Serial number": "ETKS234376R0072F-00320/35MIR-001-F-003"
+        }
+    },
+    "/Powerboard/CAN nodes/Node ID 11: Corner 1 - left front": {
+        "level": 0,
+        "message": "CAN node is operational",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Node type": "MiR Corner",
+            "Node State": "Operational",
+            "Hardware version": "000",
+            "Node SW Version": "3.6.1-d4",
+            "MD5": "E4D23B21FB45526DFF1F4F1134FF73C9",
+            "Serial number": "ETKS234376R0355F-00320/35MIR-001-F-003"
+        }
+    },
+    "/Powerboard/CAN nodes/Node ID 12: Corner 2 - left back": {
+        "level": 0,
+        "message": "CAN node is operational",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Node type": "MiR Corner",
+            "Node State": "Operational",
+            "Hardware version": "000",
+            "Node SW Version": "3.6.1-d4",
+            "MD5": "E4D23B21FB45526DFF1F4F1134FF73C9",
+            "Serial number": "ETKS234376R0061F-00320/35MIR-001-F-003"
+        }
+    },
+    "/Powerboard/CAN nodes/Node ID 13: Corner 3 - tail left": {
+        "level": 0,
+        "message": "CAN node is operational",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Node type": "MiR Corner",
+            "Node State": "Operational",
+            "Hardware version": "000",
+            "Node SW Version": "3.6.1-d4",
+            "MD5": "E4D23B21FB45526DFF1F4F1134FF73C9",
+            "Serial number": "ETKS234376R0483F-00320/35MIR-001-F-003"
+        }
+    },
+    "/Powerboard/CAN nodes/Node ID 14: Corner 4 - tail right": {
+        "level": 0,
+        "message": "CAN node is operational",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Node type": "MiR Corner",
+            "Node State": "Operational",
+            "Hardware version": "000",
+            "Node SW Version": "3.6.1-d4",
+            "MD5": "E4D23B21FB45526DFF1F4F1134FF73C9",
+            "Serial number": "ETKS234376R0434F-00320/35MIR-001-F-003"
+        }
+    },
+    "/Powerboard/CAN nodes/Node ID 15: Corner 5 - right back": {
+        "level": 0,
+        "message": "CAN node is operational",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Node type": "MiR Corner",
+            "Node State": "Operational",
+            "Hardware version": "000",
+            "Node SW Version": "3.6.1-d4",
+            "MD5": "E4D23B21FB45526DFF1F4F1134FF73C9",
+            "Serial number": "ETKS234376R0340F-00320/35MIR-001-F-003"
+        }
+    },
+    "/Powerboard/CAN nodes/Node ID 16: Corner 6 - right front": {
+        "level": 0,
+        "message": "CAN node is operational",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Node type": "MiR Corner",
+            "Node State": "Operational",
+            "Hardware version": "000",
+            "Node SW Version": "3.6.1-d4",
+            "MD5": "E4D23B21FB45526DFF1F4F1134FF73C9",
+            "Serial number": "ETKS234376R0073F-00320/35MIR-001-F-003"
+        }
+    },
+    "/Powerboard/CAN nodes/Node ID 17: Corner 7 - head right": {
+        "level": 0,
+        "message": "CAN node is operational",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Node type": "MiR Corner",
+            "Node State": "Operational",
+            "Hardware version": "000",
+            "Node SW Version": "3.6.1-d4",
+            "MD5": "E4D23B21FB45526DFF1F4F1134FF73C9",
+            "Serial number": "ETKS234376R0066F-00320/35MIR-001-F-003"
+        }
+    },
+    "/Powerboard/CAN nodes/Node ID 20: Brake": {
+        "level": 0,
+        "message": "CAN node is operational",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Node type": "MiR Brake",
+            "Node State": "Operational",
+            "Hardware version": "000",
+            "Node SW Version": "3.6.1-d4",
+            "MD5": "8FEA187589D9EFCCE9C0537D0531CD7F",
+            "Serial number": "ETKS233476R0011C-00220/26MIR-003-C-002"
+        }
+    },
+    "/Powerboard/CAN nodes/Node ID 21: GPIO": {
+        "level": 0,
+        "message": "CAN node is operational",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Node type": "MiR GPIO",
+            "Node State": "Operational",
+            "Hardware version": "000",
+            "Node SW Version": "3.6.1-d",
+            "MD5": "C8B66BC163404A57298B771313AC6431",
+            "Serial number": "ETKS232891R0003C-00420/20MIR-013-C-004"
+        }
+    },
+    "/Powerboard/CAN Communication bus": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Powerboard/CAN Communication bus/CAN bus MC light proxy gpio": "OK active",
+            "/Powerboard/CAN Communication bus/CAN bus charger battery": "OK active"
+        }
+    },
+    "/Powerboard/CAN Communication bus/CAN bus MC light proxy gpio": {
+        "level": 0,
+        "message": "OK active",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Receive packets": "3902063",
+            "Transmit packets": "795891",
+            "Receive overrun": "758",
+            "Transmit overrun": "11622",
+            "Transmit timeouts": "0",
+            "Transmit error counter (TEC)": "0",
+            "Receive error counter (REC)": "0"
+        }
+    },
+    "/Powerboard/CAN Communication bus/CAN bus charger battery": {
+        "level": 0,
+        "message": "OK active",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Receive packets": "79526",
+            "Transmit packets": "70504",
+            "Receive overrun": "0",
+            "Transmit overrun": "0",
+            "Transmit timeouts": "0",
+            "Transmit error counter (TEC)": "0",
+            "Receive error counter (REC)": "0"
+        }
+    },
+    "/Powerboard": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "Diagnostics": "OK",
+            "Internal IOs": "OK",
+            "Light control connection": "OK",
+            "CAN nodes": "OK",
+            "CAN Communication bus": "OK"
+        }
+    },
+    "/Power System": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Power System/Charger": "",
+            "/Power System/Battery": "Battery is OK",
+            "/Power System/Battery Management System": "BMS communication is OK",
+            "/Power System/Charging Status": "OK"
+        }
+    },
+    "/Power System/Charger": {
+        "level": 0,
+        "message": "",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Charging Status": "Disconnected",
+            "Int. State": "81",
+            "Current": "0.00",
+            "Voltage": "53.28",
+            "Ampere Hours": "21",
+            "Alarm": "NONE (0,0,0)",
+            "Temperature 1": "39",
+            "Temperature 2": "38",
+            "External Cable Charger": "Disconnected",
+            "Dock charger pin enabled": "Off"
+        }
+    },
+    "/Power System/Battery": {
+        "level": 0,
+        "message": "Battery is OK",
+        "hardware_id": "Battery",
+        "values": {
+            "Battery Voltage [V]": "53.07",
+            "Remaining battery capacity [%]": "100",
+            "Remaining battery time [sec]": "63770",
+            "Remaining battery time [HH:MM:SS]": "17:42:50",
+            "Remaining battery capacity [mAh]": "29973"
+        }
+    },
+    "/Power System/Battery Management System": {
+        "level": 0,
+        "message": "BMS communication is OK",
+        "hardware_id": "Battery",
+        "values": {
+            "Pack voltage [V]": "53.07",
+            "Charge current [A]": "0",
+            "Discharge current [A]": "1.485",
+            "State of charge [%]": "100",
+            "Remaining capacity [mAh]": "29973",
+            "State of health [%]": "100",
+            "Temperature 1 [degrees]": "33",
+            "Temperature 2 [degrees]": "33",
+            "Temperature PCB [degrees]": "35",
+            "Output Status": "On",
+            "Charger detected": "Off",
+            "Charging": "Off",
+            "Discharging": "On",
+            "Charge cycle count": "1",
+            "Fully charged voltage [V]": "53",
+            "Fully charged capacity [mAh]": "32804",
+            "Charge FET": "On",
+            "Discharge FET": "On",
+            "FET Voltage (CHG) [V]": "53.686",
+            "FET Voltage (DSG) [V]": "53.686",
+            "Fully charged": "Off",
+            "Fully discharged": "Off",
+            "Nearly discharged": "Off",
+            "Temperature error (CHG)": "Off",
+            "Temperature error (DSG)": "Off",
+            "Cell over voltage fault": "Off",
+            "Cell under voltage fault": "Off",
+            "Over current fault (CHG)": "Off",
+            "Over current fault (DSG)": "Off",
+            "Short circuit fault": "Off",
+            "Over current counter (CHG)": "0",
+            "Over current counter (DSG)": "0",
+            "Hardware version": "1.1",
+            "Firmware version": "1.2.6",
+            "Bootloader version": "1.0",
+            "Manufacturing week/year": "0 / 0",
+            "Serial Number": "0",
+            "{\"message\": \"Cell voltage %(cell)d [mV]\", \"args\": {\"cell\":0}}": "4081",
+            "{\"message\": \"Cell voltage %(cell)d [mV]\", \"args\": {\"cell\":1}}": "4083",
+            "{\"message\": \"Cell voltage %(cell)d [mV]\", \"args\": {\"cell\":2}}": "4084",
+            "{\"message\": \"Cell voltage %(cell)d [mV]\", \"args\": {\"cell\":3}}": "4085",
+            "{\"message\": \"Cell voltage %(cell)d [mV]\", \"args\": {\"cell\":4}}": "4083",
+            "{\"message\": \"Cell voltage %(cell)d [mV]\", \"args\": {\"cell\":5}}": "4080",
+            "{\"message\": \"Cell voltage %(cell)d [mV]\", \"args\": {\"cell\":6}}": "4083",
+            "{\"message\": \"Cell voltage %(cell)d [mV]\", \"args\": {\"cell\":7}}": "4080",
+            "{\"message\": \"Cell voltage %(cell)d [mV]\", \"args\": {\"cell\":8}}": "4079",
+            "{\"message\": \"Cell voltage %(cell)d [mV]\", \"args\": {\"cell\":9}}": "4080",
+            "{\"message\": \"Cell voltage %(cell)d [mV]\", \"args\": {\"cell\":10}}": "4084",
+            "{\"message\": \"Cell voltage %(cell)d [mV]\", \"args\": {\"cell\":11}}": "4084",
+            "{\"message\": \"Cell voltage %(cell)d [mV]\", \"args\": {\"cell\":12}}": "4078",
+            "Cell voltage imbalance [mV]": "6"
+        }
+    },
+    "/Power System/Charging Status": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "Battery",
+        "values": {
+            "Charging relay": "Off",
+            "Voltage [V]": "53.07",
+            "Low voltage": "No"
+        }
+    },
+    "/Fleet": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Fleet/fleet_connection": "fleet_connection_is_ok"
+        }
+    },
+    "/Fleet/fleet_connection": {
+        "level": 0,
+        "message": "fleet_connection_is_ok",
+        "hardware_id": "Fleet",
+        "values": {
+            "fleet_ip_address": "192.168.1.8",
+            "time_since_last_fleet_message": "0.735453"
+        }
+    },
+    "/Safety System": {
+        "level": 1,
+        "message": "Warning",
+        "hardware_id": "",
+        "values": {
+            "/Safety System/Communication": "SICK Safety PLC is running a non-standard configuration",
+            "/Safety System/Emergency Stop": "Emergency Stop is OK"
+        }
+    },
+    "/Safety System/Communication": {
+        "level": 1,
+        "message": "SICK Safety PLC is running a non-standard configuration",
+        "hardware_id": "SickPLC",
+        "values": {
+            "IP address": "192.168.12.9",
+            "Commands recieved": "2633",
+            "SW Version": "5",
+            "Gear ratio": "10.167",
+            "CRC": "0x2238E195",
+            "Bytes": "[153, 96, 64, 0, 4, 192, 0, 0, 65, 102]",
+            "Configuration Type": "Normal"
+        }
+    },
+    "/Safety System/Emergency Stop": {
+        "level": 0,
+        "message": "Emergency Stop is OK",
+        "hardware_id": "SickPLC",
+        "values": {
+            "Emergency stop": "Off",
+            "E-Stop Restart Required": "False",
+            "Emergency button": "Released",
+            "Restart Button": "Released",
+            "Stop Button": "Released",
+            "STO Feedback": "OK",
+            "Mechanical Brake Feedback": "OK",
+            "Back cutoff 1 status": "OK",
+            "Safe Stop Violation (SS1)": "OK",
+            "Safe Guard Stop Enabled": "False",
+            "Shared E-Stop Input": "False",
+            "Limit Speed Input": "False",
+            "Manual Mode Engaged": "False",
+            "Manual Brake Release Switch": "Off",
+            "Shared E-Stop Output": "False",
+            "Locomotion Output": "False",
+            "Safety muted": "Off",
+            "Turn Speed Violation": "OK",
+            "Forced Stop": "False",
+            "Manual Mode Reset Required": "False",
+            "Braked from Manual Mode": "True",
+            "Software Manual Mode Engaged": "False",
+            "E-Stop Input Status": "OK",
+            "Safe Guard Stop Input Status": "OK",
+            "Shared E-Stop Input Status": "OK",
+            "Reduced Speed Input Status": "OK",
+            "I/O module 1 Output Status": "OK",
+            "I/O module 2 Output Status": "OK",
+            "I/O module 3 Output Status": "OK",
+            "I/O module 4 Output Status": "OK",
+            "Back cutoff 2 status": "OK",
+            "Front cutoff 1 status": "OK",
+            "Laser (Front) Contamination Error": "False",
+            "Key turn off": "False",
+            "Laser (Front) Device Error": "False",
+            "Laser (Front)": "Free",
+            "Front cutoff 2 status": "OK",
+            "Error in STO feedback from top module": "OK",
+            "Laser (Back) Contamination Error": "False",
+            "Laser (Back) Device Error": "False",
+            "Laser (Back)": "Free",
+            "Max Speed Violation": "OK",
+            "Low Speed Violation": "OK",
+            "Encoder Error": "False",
+            "Left Motor Encoder": "OK",
+            "Right Motor Encoder": "OK"
+        }
+    },
+    "/Sensors/Laserscanner (Back)": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Sensors/Laserscanner (Back)/Communication": "Connected to scanner"
+        }
+    },
+    "/Sensors/Laserscanner (Back)/Communication": {
+        "level": 0,
+        "message": "Connected to scanner",
+        "hardware_id": "192.168.12.11",
+        "values": {
+            "Firmware version": "R01.64",
+            "Application checksum": "f1d31e74",
+            "Overall checksum": "3f8278cc",
+            "Device type": "NANS3-CAAZ30AN1P04",
+            "Host udp port": "6061",
+            "Device IP": "192.168.12.11",
+            "Version version": "R",
+            "Version major version": "2",
+            "Version minor version": "0",
+            "Version release": "0",
+            "Serial number of device": "20090230",
+            "Serial number of channel plug": "20080016",
+            "Channel number": "0",
+            "Data frequency [Hz]": "17.1",
+            "Sequence number": "91581",
+            "Scan number": "187912",
+            "Timestamp date": "0",
+            "Timestamp time": "5522375",
+            "Run mode active": "true",
+            "Standby mode active": "false",
+            "Contamination warning": "Clean",
+            "Contamination error": "false",
+            "Reference contour status": "false",
+            "Manipulation status": "false",
+            "Current monitoring case no table 1": "16",
+            "Current monitoring case no table 2": "0",
+            "Current monitoring case no table 3": "0",
+            "Current monitoring case no table 4": "0",
+            "Application error": "false",
+            "Device error": "false"
+        }
+    },
+    "/Sensors/3D Camera (Left)": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Sensors/3D Camera (Left)/Connection": "Camera is OK"
+        }
+    },
+    "/Sensors/3D Camera (Left)/Connection": {
+        "level": 0,
+        "message": "Camera is OK",
+        "hardware_id": "RealsenseD435",
+        "values": {
+            "Data Frequency [Hz]": "15",
+            "Frame Counter": "80752",
+            "Device Name": "Intel RealSense D435",
+            "Device Serial Number": "943222071945",
+            "Device Firmware Version": "5.15.0.2",
+            "Device Physical Port": "/sys/devices/pci0000:00/0000:00:14.0/usb2/2-1/2-1:1.0/video4linux/video0",
+            "Device USB version": "3.2",
+            "Projector temperature": "34",
+            "Camera emitter running": "true"
+        }
+    },
+    "/Sensors/3D Camera (Right)": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Sensors/3D Camera (Right)/Connection": "Camera is OK"
+        }
+    },
+    "/Sensors/3D Camera (Right)/Connection": {
+        "level": 0,
+        "message": "Camera is OK",
+        "hardware_id": "RealsenseD435",
+        "values": {
+            "Data Frequency [Hz]": "15.01",
+            "Frame Counter": "80765",
+            "Device Name": "Intel RealSense D435",
+            "Device Serial Number": "943222071433",
+            "Device Firmware Version": "5.15.0.2",
+            "Device Physical Port": "/sys/devices/pci0000:00/0000:00:14.0/usb2/2-3/2-3:1.0/video4linux/video6",
+            "Device USB version": "3.2",
+            "Projector temperature": "34",
+            "Camera emitter running": "true"
+        }
+    },
+    "/Sensors/Laserscanner (Front)": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Sensors/Laserscanner (Front)/Communication": "Connected to scanner"
+        }
+    },
+    "/Sensors/Laserscanner (Front)/Communication": {
+        "level": 0,
+        "message": "Connected to scanner",
+        "hardware_id": "192.168.12.10",
+        "values": {
+            "Firmware version": "R01.64",
+            "Application checksum": "34f18ae2",
+            "Overall checksum": "74eed99d",
+            "Device type": "NANS3-CAAZ30AN1P04",
+            "Host udp port": "6060",
+            "Device IP": "192.168.12.10",
+            "Version version": "R",
+            "Version major version": "2",
+            "Version minor version": "0",
+            "Version release": "0",
+            "Serial number of device": "20290419",
+            "Serial number of channel plug": "20110331",
+            "Channel number": "0",
+            "Data frequency [Hz]": "17",
+            "Sequence number": "91588",
+            "Scan number": "187924",
+            "Timestamp date": "0",
+            "Timestamp time": "5522324",
+            "Run mode active": "true",
+            "Standby mode active": "false",
+            "Contamination warning": "Clean",
+            "Contamination error": "false",
+            "Reference contour status": "false",
+            "Manipulation status": "false",
+            "Current monitoring case no table 1": "16",
+            "Current monitoring case no table 2": "0",
+            "Current monitoring case no table 3": "0",
+            "Current monitoring case no table 4": "0",
+            "Application error": "false",
+            "Device error": "false"
+        }
+    },
+    "/Sensors/IMU": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Sensors/IMU/Accelerometer": "IMU OK",
+            "/Sensors/IMU/Gyroscope": "Gyro OK"
+        }
+    },
+    "/Sensors/IMU/Accelerometer": {
+        "level": 0,
+        "message": "IMU OK",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "X": "-0.007 ",
+            "Y": "0.004  ",
+            "Z": "1.017  ",
+            "Last Drift Correction": "0ms"
+        }
+    },
+    "/Sensors/IMU/Gyroscope": {
+        "level": 0,
+        "message": "Gyro OK",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Yaw": "105.343",
+            "Pitch": "0.000  ",
+            "Roll": "0.000  ",
+            "IMU Temperature": "39.4   ",
+            "IMU Z State": "2",
+            "IMU Transform": "[1.00,0.00,0.00][0.00,1.00,0.00][0.00,0.00,1.00]",
+            "IMU Init Passed": "1",
+            "Last Drift Correction": "0ms"
+        }
+    },
+    "/Sensors/Proximity sensors": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Sensors/Proximity sensors/Diagnostics": "OK",
+            "/Sensors/Proximity sensors/head_left": "OK",
+            "/Sensors/Proximity sensors/head_right": "OK",
+            "/Sensors/Proximity sensors/left_back": "OK",
+            "/Sensors/Proximity sensors/left_front": "OK",
+            "/Sensors/Proximity sensors/right_back": "OK",
+            "/Sensors/Proximity sensors/right_front": "OK",
+            "/Sensors/Proximity sensors/tail_left": "OK",
+            "/Sensors/Proximity sensors/tail_right": "OK"
+        }
+    },
+    "/Sensors/Proximity sensors/Diagnostics": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "proximity_sensors_hardware_id",
+        "values": {
+            "Transmissions data raw": "1506660",
+            "Transmissions data calibrated": "142482",
+            "Transmissions data pointcloud": "142441",
+            "data raw [mm]": "[ 126 188 186 342 365 367 360 357 354 344 368 357 344 371  326 320  381  364 366  385 342 351 359 143 ]",
+            "data calibrated [mm]": "[ 365 377 368 372 365 369 368 365 376 364 376 376 379 369  381 358  402  388 364  384 363 370 366 379 ]",
+            "data as height above floor [mm]": "[  +0  -8  -1  -4  +0  -2  -1  +0  -7  +1  -7  -7  -9  -2  -11  +6  -27  -16  +1  -13  +2  -2  +0  -9 ]",
+            "Threshold (Specified as sensor value) [mm]": "300",
+            "Threshold (converted to height above floor) [mm]": "50.7667"
+        }
+    },
+    "/Sensors/Proximity sensors/head_left": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "proximity_sensors_hardware_id",
+        "values": {
+            "Sensor 0": "-----",
+            "Sensor 0 - data raw [mm]": "126.000000",
+            "Sensor 0 - running mean / standart deviation[mm]": "125.230000 / 2.292837",
+            "Sensor 0 - running min / max [mm]": "120 / 131",
+            "Sensor 0 - alltime min / max [mm]": "117 / 136",
+            "Sensor 1": "-----",
+            "Sensor 1 - data raw [mm]": "188.000000",
+            "Sensor 1 - running mean / standart deviation[mm]": "184.720000 / 3.181446",
+            "Sensor 1 - running min / max [mm]": "176 / 194",
+            "Sensor 1 - alltime min / max [mm]": "110 / 195",
+            "Sensor 2": "-----",
+            "Sensor 2 - data raw [mm]": "186.000000",
+            "Sensor 2 - running mean / standart deviation[mm]": "188.220000 / 2.896826",
+            "Sensor 2 - running min / max [mm]": "181 / 199",
+            "Sensor 2 - alltime min / max [mm]": "84 / 200"
+        }
+    },
+    "/Sensors/Proximity sensors/head_right": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "proximity_sensors_hardware_id",
+        "values": {
+            "Sensor 21": "-----",
+            "Sensor 21 - data raw [mm]": "351.000000",
+            "Sensor 21 - running mean / standart deviation[mm]": "355.170000 / 4.929615",
+            "Sensor 21 - running min / max [mm]": "344 / 369",
+            "Sensor 21 - alltime min / max [mm]": "0 / 370",
+            "Sensor 22": "-----",
+            "Sensor 22 - data raw [mm]": "359.000000",
+            "Sensor 22 - running mean / standart deviation[mm]": "365.600000 / 4.427189",
+            "Sensor 22 - running min / max [mm]": "356 / 376",
+            "Sensor 22 - alltime min / max [mm]": "0 / 392",
+            "Sensor 23": "-----",
+            "Sensor 23 - data raw [mm]": "143.000000",
+            "Sensor 23 - running mean / standart deviation[mm]": "143.660000 / 2.201000",
+            "Sensor 23 - running min / max [mm]": "138 / 150",
+            "Sensor 23 - alltime min / max [mm]": "0 / 157"
+        }
+    },
+    "/Sensors/Proximity sensors/left_back": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "proximity_sensors_hardware_id",
+        "values": {
+            "Sensor 6": "-----",
+            "Sensor 6 - data raw [mm]": "360.000000",
+            "Sensor 6 - running mean / standart deviation[mm]": "359.850000 / 4.133703",
+            "Sensor 6 - running min / max [mm]": "347 / 369",
+            "Sensor 6 - alltime min / max [mm]": "0 / 375",
+            "Sensor 7": "-----",
+            "Sensor 7 - data raw [mm]": "357.000000",
+            "Sensor 7 - running mean / standart deviation[mm]": "355.990000 / 4.357740",
+            "Sensor 7 - running min / max [mm]": "343 / 367",
+            "Sensor 7 - alltime min / max [mm]": "0 / 372",
+            "Sensor 8": "-----",
+            "Sensor 8 - data raw [mm]": "354.000000",
+            "Sensor 8 - running mean / standart deviation[mm]": "350.990000 / 3.683735",
+            "Sensor 8 - running min / max [mm]": "342 / 359",
+            "Sensor 8 - alltime min / max [mm]": "0 / 365"
+        }
+    },
+    "/Sensors/Proximity sensors/left_front": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "proximity_sensors_hardware_id",
+        "values": {
+            "Sensor 3": "-----",
+            "Sensor 3 - data raw [mm]": "342.000000",
+            "Sensor 3 - running mean / standart deviation[mm]": "344.440000 / 3.470792",
+            "Sensor 3 - running min / max [mm]": "335 / 353",
+            "Sensor 3 - alltime min / max [mm]": "0 / 359",
+            "Sensor 4": "-----",
+            "Sensor 4 - data raw [mm]": "365.000000",
+            "Sensor 4 - running mean / standart deviation[mm]": "368.500000 / 4.432832",
+            "Sensor 4 - running min / max [mm]": "354 / 381",
+            "Sensor 4 - alltime min / max [mm]": "0 / 392",
+            "Sensor 5": "-----",
+            "Sensor 5 - data raw [mm]": "367.000000",
+            "Sensor 5 - running mean / standart deviation[mm]": "369.080000 / 4.910560",
+            "Sensor 5 - running min / max [mm]": "357 / 379",
+            "Sensor 5 - alltime min / max [mm]": "0 / 386"
+        }
+    },
+    "/Sensors/Proximity sensors/right_back": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "proximity_sensors_hardware_id",
+        "values": {
+            "Sensor 15": "-----",
+            "Sensor 15 - data raw [mm]": "320.000000",
+            "Sensor 15 - running mean / standart deviation[mm]": "324.160000 / 3.548859",
+            "Sensor 15 - running min / max [mm]": "312 / 335",
+            "Sensor 15 - alltime min / max [mm]": "0 / 336",
+            "Sensor 16": "-----",
+            "Sensor 16 - data raw [mm]": "381.000000",
+            "Sensor 16 - running mean / standart deviation[mm]": "377.350000 / 3.806245",
+            "Sensor 16 - running min / max [mm]": "369 / 385",
+            "Sensor 16 - alltime min / max [mm]": "0 / 396",
+            "Sensor 17": "-----",
+            "Sensor 17 - data raw [mm]": "364.000000",
+            "Sensor 17 - running mean / standart deviation[mm]": "355.170000 / 4.443096",
+            "Sensor 17 - running min / max [mm]": "345 / 369",
+            "Sensor 17 - alltime min / max [mm]": "0 / 371"
+        }
+    },
+    "/Sensors/Proximity sensors/right_front": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "proximity_sensors_hardware_id",
+        "values": {
+            "Sensor 18": "-----",
+            "Sensor 18 - data raw [mm]": "366.000000",
+            "Sensor 18 - running mean / standart deviation[mm]": "365.330000 / 3.794878",
+            "Sensor 18 - running min / max [mm]": "359 / 373",
+            "Sensor 18 - alltime min / max [mm]": "0 / 382",
+            "Sensor 19": "-----",
+            "Sensor 19 - data raw [mm]": "385.000000",
+            "Sensor 19 - running mean / standart deviation[mm]": "378.270000 / 4.814260",
+            "Sensor 19 - running min / max [mm]": "367 / 391",
+            "Sensor 19 - alltime min / max [mm]": "0 / 394",
+            "Sensor 20": "-----",
+            "Sensor 20 - data raw [mm]": "342.000000",
+            "Sensor 20 - running mean / standart deviation[mm]": "340.370000 / 4.090611",
+            "Sensor 20 - running min / max [mm]": "330 / 353",
+            "Sensor 20 - alltime min / max [mm]": "0 / 355"
+        }
+    },
+    "/Sensors/Proximity sensors/tail_left": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "proximity_sensors_hardware_id",
+        "values": {
+            "Sensor 9": "-----",
+            "Sensor 9 - data raw [mm]": "344.000000",
+            "Sensor 9 - running mean / standart deviation[mm]": "353.100000 / 7.976841",
+            "Sensor 9 - running min / max [mm]": "335 / 378",
+            "Sensor 9 - alltime min / max [mm]": "0 / 395",
+            "Sensor 10": "-----",
+            "Sensor 10 - data raw [mm]": "368.000000",
+            "Sensor 10 - running mean / standart deviation[mm]": "367.620000 / 4.235044",
+            "Sensor 10 - running min / max [mm]": "357 / 380",
+            "Sensor 10 - alltime min / max [mm]": "0 / 384",
+            "Sensor 11": "-----",
+            "Sensor 11 - data raw [mm]": "357.000000",
+            "Sensor 11 - running mean / standart deviation[mm]": "358.370000 / 4.403760",
+            "Sensor 11 - running min / max [mm]": "348 / 369",
+            "Sensor 11 - alltime min / max [mm]": "0 / 372"
+        }
+    },
+    "/Sensors/Proximity sensors/tail_right": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "proximity_sensors_hardware_id",
+        "values": {
+            "Sensor 12": "-----",
+            "Sensor 12 - data raw [mm]": "344.000000",
+            "Sensor 12 - running mean / standart deviation[mm]": "348.580000 / 3.533214",
+            "Sensor 12 - running min / max [mm]": "340 / 356",
+            "Sensor 12 - alltime min / max [mm]": "0 / 364",
+            "Sensor 13": "-----",
+            "Sensor 13 - data raw [mm]": "371.000000",
+            "Sensor 13 - running mean / standart deviation[mm]": "373.330000 / 3.934603",
+            "Sensor 13 - running min / max [mm]": "359 / 381",
+            "Sensor 13 - alltime min / max [mm]": "0 / 389",
+            "Sensor 14": "-----",
+            "Sensor 14 - data raw [mm]": "326.000000",
+            "Sensor 14 - running mean / standart deviation[mm]": "324.140000 / 6.240224",
+            "Sensor 14 - running min / max [mm]": "307 / 339",
+            "Sensor 14 - alltime min / max [mm]": "0 / 363"
+        }
+    },
+    "/Sensors": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "Laserscanner (Back)": "OK",
+            "3D Camera (Left)": "OK",
+            "3D Camera (Right)": "OK",
+            "Laserscanner (Front)": "OK",
+            "IMU": "OK",
+            "Proximity sensors": "OK"
+        }
+    },
+    "/Serial Interface": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Serial Interface/Communication": "No serial device configured"
+        }
+    },
+    "/Serial Interface/Communication": {
+        "level": 0,
+        "message": "No serial device configured",
+        "hardware_id": "MirSerialInterface",
+        "values": {
+            "Command count": "0",
+            "Port": "/dev/ttyUSB",
+            "Serial number": "",
+            "Baudrate": "19200",
+            "Datasize": "8",
+            "Parity": "0",
+            "Response delay [us]": "10000"
+        }
+    },
+    "/Wise": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "/Wise/Connection": "No devices to show"
+        }
+    },
+    "/Wise/Connection": {
+        "level": 0,
+        "message": "No devices to show",
+        "hardware_id": "Wise",
+        "values": {}
+    },
+    "/Other": {
+        "level": 0,
+        "message": "OK",
+        "hardware_id": "",
+        "values": {
+            "BMZ battery (Battery #1 has no serial)": ""
+        }
+    },
+    "/Other/BMZ battery (Battery #1 has no serial)": {
+        "level": 0,
+        "message": "",
+        "hardware_id": "PowerBoard",
+        "values": {
+            "Overcurrent register: DSG OC2 counter": "0",
+            "Overcurrent register: DSG OC3 counter": "0",
+            "Overcurrent register: AFE OC1 counter": "0",
+            "Overcurrent register: AFE OC2 counter": "0",
+            "Overcurrent register: CHG latch clear counter": "0",
+            "Overcurrent register: DSG latch clear counter": "0"
+        }
+    }
+}
