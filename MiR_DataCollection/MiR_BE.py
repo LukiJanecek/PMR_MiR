@@ -50,14 +50,62 @@ def getData(command):
         print(f"Error in fetching data from {param.active_ip_address}: {e}")
         return False
     
-def getDesiredData():    
-    mission_command = "mission"
+def getDesiredData(): 
+    command = f"mission_queue/{param.activeMission}"
+    url = f"http://{param.active_ip_address}/api/v2.0.0/{command}"
+    HEADERS = {"Authorization": f"{param.activeAuthKey}", "Content-Type": "application/json"}
+
+    try:
+        response = requests.get(url, headers=HEADERS)
+        response.raise_for_status()
+        mission_status = response.json()
+
+        state = mission_status.get("state", "")
+        print(f"🔄 Mission state: {state}")
+
+        if state != "Executing":
+            print("✅ Mission is not running. Skipping measurement.")
+            return None, True
+
+    except requests.RequestException as e:
+        print(f"❌ Error while checking mission state: {e}")
+        return None, True
+
+    # === Pokud mise běží, stáhni diagnostická data ===
+    data_command = "experimental/diagnostics"
+    data_url = f"http://{param.active_ip_address}/api/v2.0.0/{data_command}"
+
+    try:
+        response = requests.get(data_url, headers=HEADERS)
+        response.raise_for_status()
+        mir_data = response.json()
+    except requests.RequestException as e:
+        print(f"⚠️ Failed to retrieve diagnostic data: {e}")
+        return None, False
+
+    brake_info = mir_data.get("/Motors/Brake", {}).get("values", {})
+
+    voltage = brake_info.get("Voltage", "N/A")
+    temperature = brake_info.get("Board temperature", "N/A")
+
+    print(f"🔋 Voltage: {voltage} V | 🌡️ Temp: {temperature} °C")
+    return (voltage, temperature), False
+
+
+    mission_command = "mission_queue"
     activeMission_status = getData(mission_command)
 
     if not activeMission_status:
         print("No active mission found.")
         return None, True
     
+    state = activeMission_status.get("state", "")
+    print(f"🔄 Mission state: {state}")
+
+    if state != "Executing":
+        print("✅ Mission is no longer running. Skipping measurement.")
+        return None, True
+
     data_command =  "experimental/diagnostics"   
     mir_data = getData(data_command)    
     if not mir_data:
@@ -106,7 +154,32 @@ def get_mission_queue():
         print(f"❌ Error retrieving mission queue: {e}")
         return None
 
-def isMissionRunning(mission_id, attempts = 10, delay = 100):
+def isMissionRunning(mission_queue_id, attempts = 10, delay = 100, timeout = 200):
+    command = "mission_queue"
+    url = f"http://{param.active_ip_address}/api/v2.0.0/{command}/{mission_queue_id}"
+    HEADERS = {"Authorization": f"{param.activeAuthKey}", "Content-Type": "application/json"}
+    start_time = time.time()
+
+    while time.time() - start_time < timeout:
+        response = requests.get(url, headers=HEADERS)
+        response.raise_for_status()
+        status = response.json()["state"]
+        
+        print(f"Mission state: {status}")
+        
+        if status == "Executing":
+            print("Mission is now running.")
+            return True
+        elif status in ["Done", "Failed", "Aborted"]:
+            print(f"Mission ended prematurely with state: {status}")
+            return False
+
+        time.sleep(1)
+
+    print("Timeout waiting for mission to start.")
+    return False
+    
+    
     for attempt in range(attempts):
         #time.sleep(delay)
         queue = get_mission_queue()
@@ -173,7 +246,6 @@ def close_connection():
     
 def get_all_maps():
     command = "maps"
-    
     response = getData(command)
     if not response:
         print("Could not retrieve maps.")
@@ -191,7 +263,6 @@ def get_all_maps():
 
 def get_all_missions():
     command = "missions"
-    
     response = getData(command)
     if not response:
         print("Could not retrieve missions.")
@@ -244,13 +315,17 @@ def start_mission(mission_id):
     try:
         HEADERS = {"Authorization": f"{param.activeAuthKey}", "Content-Type": "application/json"}
         response = requests.post(url, headers = HEADERS, json=payload)
+        response.raise_for_status()
+        mission_queue_id = response.json()["id"]
+        print(f"Mission started in queue with ID: {mission_queue_id}")
 
         if response.status_code == 201:
             print("✅ Mission successfully started!")
 
             # verify mission queue 
-            if isMissionRunning(mission_id):
+            if isMissionRunning(mission_queue_id):
                 print("🚀 Mission is now running!")
+                param.activeMission = mission_queue_id
                 return True
             else:
                 print("❌ Mission not running after multiple checks.")
@@ -262,8 +337,6 @@ def start_mission(mission_id):
     except Exception as e:
         print(f"❌ Error starting mission: {e}")
         return False
-        
-
 
 def dataMeasuring():
     result, mission_finished = getDesiredData()
@@ -274,9 +347,10 @@ def dataMeasuring():
 
     if result:
         voltage, temp = result
+        print(f"🔋 Voltage: {voltage} V | 🌡️ Temp: {temp} °C")
         param.dataBreaksVoltage.append(voltage)
         param.dataBreaksTemperature.append(temp)
-        param.dataBreaksTimestamps.append(datetime.datetime.now())
+        param.dataBreaksTimestamps.append(datetime.now())
 
     return mission_finished, param.dataBreaksVoltage, param.dataBreaksTimestamps
 

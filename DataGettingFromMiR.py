@@ -233,7 +233,6 @@ def fetch_data(url):
 def getData(ip_address, command):
     try:
         url = f"http://{ip_address}/api/v2.0.0/{command}"
-        
         response = requests.get(url, headers = HEADERS)
         response.raise_for_status()
         data = response.json()
@@ -242,73 +241,39 @@ def getData(ip_address, command):
         print(f"Error in fetching data from {ip_address}: {e}")
         return None
     
-
-def start_mission(mir_ip, authorization, mission_id):
-    url = f"http://{mir_ip}/v2.0.0/mission_queue"  # Endpoint pro přidání mise do fronty
-    headers = {
-        "Authorization": f"{authorization}",
-        "Content-Type": "application/json"
-    }
-    payload = {
-        "mission_id": mission_id
-    }
-
-    try:
-        response = requests.post(url, headers=headers, data=json.dumps(payload))
-        
-        if response.status_code == 201:
-            print("Mission successfully added to the queue!")
-            print("Response:", response.json())
-        else:
-            print(f"Failed to start mission. Status code: {response.status_code}")
-            print("Response:", response.text)
-            
-    except Exception as e:
-        print(f"Error starting mission: {e}")
-
-def start_mission2(mir_ip, authorization, mission_id):
-    url = f"/v2.0.0/mission_queue"  # Endpoint pro přidání mise do fronty
-    payload = json.dumps({"mission_id": mission_id})
+def get_all_maps():
+    command = "maps"
+    response = getData(command)
+    if not response:
+        print("Could not retrieve maps.")
+        return []
     
-    # Vytvoření socketu
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # vyhledávání map, která nás zajímají 
+    preferred_maps = ["KAS0249", "map2", "map3"]  # Příklad preferovaných map
+    filtered_maps = [
+        {"name": m["name"], "guid": m["guid"]}
+        for m in response
+        if m.get("name") in preferred_maps
+    ]
+
+    return filtered_maps
+
+def get_all_missions():
+    command = "missions"
+    response = getData(command)
+    if not response:
+        print("Could not retrieve missions.")
+        return []
     
-    try:
-        # Připojení na server
-        client_socket.connect((mir_ip, 80))  # Port 80 pro HTTP (pokud používáš HTTPS, bude to jinak)
-        
-        # Sestavení požadavku
-        request = (
-            f"POST {url} HTTP/1.1\r\n"
-            f"Host: {mir_ip}\r\n"
-            f"Authorization: {authorization}\r\n"
-            f"Content-Type: application/json\r\n"
-            f"Content-Length: {len(payload)}\r\n"
-            f"\r\n"
-            f"{payload}"
-        )
-        
-        # Odeslání požadavku
-        client_socket.sendall(request.encode('utf-8'))
-        
-        # Příjem odpovědi
-        response = client_socket.recv(4096)
-        response_text = response.decode('utf-8')
-        
-        # Vypsání odpovědi
-        if "201 Created" in response_text:
-            print("Mission successfully added to the queue!")
-            print("Response:", response_text)
-        else:
-            print("Failed to start mission. Response:")
-            print(response_text)
-            
-    except Exception as e:
-        print(f"Error starting mission: {e}")
-        
-    finally:
-        # Zavření socketu
-        client_socket.close()
+    # vyhledávání misí, která nás zajímají
+    preferred_missions = ["KAS0249", "ChargeBattery", "DeliveryA", "Dny otevřených dveří"]
+    filtered_missions = [
+        {"name": m["name"], "guid": m["guid"]}
+        for m in response
+        if m.get("name") in preferred_missions
+    ]
+
+    return filtered_missions
 
 def save_to_json(data, fileName, folder):
     try:
@@ -426,7 +391,7 @@ if __name__ == "__main__":
             print("\nAvailable commands: getdata, exit")
             command = get_user_choice(
                 "Enter command", 
-                ["getdata", "exit"]
+                ["getdata", "startmission", "exit"]
             )
 
             if command == "exit":
@@ -487,6 +452,13 @@ if __name__ == "__main__":
                     print("Data saved!")
                 else:
                     print(f"Failed to retrieve data for '{data_name}'.")
+            elif command == "startmission":
+                
+                
+                selectedmap = get_user_choice(
+                    "Choose your map: ",
+                    ["swagger", "diagnostics"]
+                )
             else:
                 print("Unknown command.")
 

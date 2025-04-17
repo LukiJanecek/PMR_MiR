@@ -32,3 +32,5 @@ dataBreaksVoltage : list = []
 dataBreaksTemperature : list = []
 dataBreaksTimestamps : list = []
 
+activeMission = None
+

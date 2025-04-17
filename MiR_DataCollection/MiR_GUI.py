@@ -173,7 +173,9 @@ class RestApiGui:
         map_guid = next((m['guid'] for m in self.maps if m['name'] == selected_map_name), None)
         mission_guid = next((m['guid'] for m in self.missions if m['name'] == selected_mission_name), None)
 
-        
+        # smaže frotnu misí, pokud existuje než začne námi požadovaný pohyb
+        MiR_BE.delete_mission_queue()
+  
         map_success = MiR_BE.set_map(map_guid)
         mission_success = MiR_BE.start_mission(mission_guid)
 
