@@ -3,15 +3,9 @@ import MiR_BE
 
 import tkinter as tk
 from tkinter import messagebox
-import requests
 from datetime import datetime
-import json
-
-from tkinter import Menu
-
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import random
 
 
 class RestApiGui:
