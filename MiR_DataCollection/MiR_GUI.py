@@ -170,9 +170,8 @@ class RestApiGui:
         # smaže frotnu misí, pokud existuje než začne námi požadovaný pohyb
         MiR_BE.delete_mission_queue()
   
-        map_success = MiR_BE.set_map(map_guid)
+        map_success, popupNeeded = MiR_BE.set_map(map_guid)
         mission_success = MiR_BE.start_mission(mission_guid)
-
   
         if not map_success:
           messagebox.showerror("Error", f"Failed to set map: {selected_map_name}.")
@@ -181,6 +180,9 @@ class RestApiGui:
           messagebox.showerror("Error", f"Failed to set mission: {selected_mission_name}.")
           return
         
+        if popupNeeded:
+            messagebox.showwarning("Manual action required", f"The map '{selected_map_name}' was changed. Please confirm the map change on the robot's touchscreen before proceeding.")
+
         if mission_success and map_success:
           messagebox.showinfo("Info", f"Successfully started map: {selected_map_name} and mission: {selected_mission_name}.")
           self.process_data_ui()

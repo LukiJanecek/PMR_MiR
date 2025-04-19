@@ -91,35 +91,6 @@ def getDesiredData():
     print(f"🔋 Voltage: {voltage} V | 🌡️ Temp: {temperature} °C")
     return (voltage, temperature), False
 
-
-    mission_command = "mission_queue"
-    activeMission_status = getData(mission_command)
-
-    if not activeMission_status:
-        print("No active mission found.")
-        return None, True
-    
-    state = activeMission_status.get("state", "")
-    print(f"🔄 Mission state: {state}")
-
-    if state != "Executing":
-        print("✅ Mission is no longer running. Skipping measurement.")
-        return None, True
-
-    data_command =  "experimental/diagnostics"   
-    mir_data = getData(data_command)    
-    if not mir_data:
-        print("⚠️ Failed to retrieve data.")
-        return None, False
-
-    brake_info = mir_data.get("/Motors/Brake", {}).get("values", {})
-
-    voltage = brake_info.get("Voltage", "N/A")
-    temperature = brake_info.get("Board temperature", "N/A")
-
-    print(f"🔋 Voltage: {voltage} V | 🌡️ Temp: {temperature} °C")
-    return (voltage, temperature), False
-
 def delete_mission_queue():
     command = "mission_queue"
     url = f"http://{param.active_ip_address}/api/v2.0.0/{command}"
@@ -281,24 +252,36 @@ def get_all_missions():
 def set_map(map_id):
     command = "status"
     url = f"http://{param.active_ip_address}/api/v2.0.0/{command}"
+    HEADERS = {"Authorization": f"{param.activeAuthKey}", "Content-Type": "application/json"}
 
     payload = {
         "map_id": map_id
     }
 
     try:
-        HEADERS = {"Authorization": f"{param.activeAuthKey}", "Content-Type": "application/json"}
+        # actual map 
+        response = requests.get(url, headers=HEADERS)
+        response.raise_for_status()
+        current_status = response.json()
+        current_map_id = current_status.get("map_id", None)
+
+        if current_map_id == map_id:
+            print("✅ Map is already active – no change needed.")
+            return True, False  # True = OK, False = není třeba zásah
+
+        # change map
         response = requests.put(url, headers = HEADERS, json=payload)
         if response.status_code == 200:
             print("🗺️ Map successfully set as active.")
-            return True
+            print("⚠️ Please make sure to confirm the map change on the robot’s touchscreen if needed.")
+            return True, True
         else:
             print(f"❌ Failed to set map. Status code: {response.status_code}")
             print("Response:", response.text)
-            return False
+            return False, False
     except Exception as e:
         print(f"❌ Error setting map: {e}")
-        return False
+        return False, False
 
 def start_mission(mission_id):    
     
