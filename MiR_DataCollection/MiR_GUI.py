@@ -1,12 +1,13 @@
-import MiR_BE
-#import MiR_BE_TEMPORARY
-
 import tkinter as tk
 from tkinter import messagebox
 from datetime import datetime
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import time 
 
+import MiR_BE
+import MiR_parameters as param
+#import MiR_BE_TEMPORARY
 
 class RestApiGui:
     def __init__(self, root):
@@ -152,9 +153,10 @@ class RestApiGui:
 
 
     def startMission(self):   
+
         selected_map_name = self.map_var.get()
         selected_mission_name = self.mission_var.get()
-
+        
         if not map or not selected_map_name:
           messagebox.showerror("Error", "Please select both Map and Mission.")
           return
@@ -238,10 +240,13 @@ class RestApiGui:
         self.ax.set_xlabel("Time")
         self.ax.tick_params(axis='x', rotation=45)
         self.canvas.draw()
+        
+        now_str = datetime.now().strftime("%H:%M:%S.%f")[:-3]  # Ořežeme mikrosekundy na milisekundy
+        print(f"[{now_str}] update_plot called")
 
         # Zastavit aktualizaci, pokud je měření ukončeno
         if not finished:
-            self.plot_updater = self.root.after(1000, self.update_plot)
+            self.plot_updater = self.root.after(10, self.update_plot)
         else:
             # Návrat do hlavního UI po dokončení měření
             messagebox.showinfo("Finished", "Data measuring finished.")

@@ -34,3 +34,6 @@ dataBreaksTimestamps : list = []
 
 activeMission = None
 
+timeMeasureRefresh = 250
+START_TIME = 0
+
