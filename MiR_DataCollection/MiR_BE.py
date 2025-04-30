@@ -168,8 +168,6 @@ def isMissionRunning(mission_queue_id, attempts = 10, delay = 100, timeout = 200
 
     return False
 
-
-
 #############################################################################################
 # Functions for FE
 
@@ -223,7 +221,7 @@ def get_all_maps():
         return []
     
     # vyhledávání map, která nás zajímají 
-    preferred_maps = ["KAS0249", "map2", "map3"]  # Příklad preferovaných map
+    preferred_maps = ["KAS0249"]  # Příklad preferovaných map
     filtered_maps = [
         {"name": m["name"], "guid": m["guid"]}
         for m in response
@@ -240,7 +238,7 @@ def get_all_missions():
         return []
     
     # vyhledávání misí, která nás zajímají
-    preferred_missions = ["KAS0249", "ChargeBattery", "DeliveryA", "Dny otevřených dveří"]
+    preferred_missions = ["KAS0249_1", "KAS0249_2"]
     filtered_missions = [
         {"name": m["name"], "guid": m["guid"]}
         for m in response
