@@ -324,9 +324,6 @@ def dataMeasuring():
         
     if mission_finished:
         print("✅ Mission ended.")
-        param.dataBreaksTemperature = []
-        param.dataBreaksVoltage = []
-        param.dataBreaksTimestamps = []
         return mission_finished, param.dataBreaksVoltage, param.dataBreaksTemperature, param.dataBreaksTimestamps
 
     if result:

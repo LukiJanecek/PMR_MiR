@@ -275,7 +275,10 @@ class RestApiGui:
                         messagebox.showinfo("Export", f"Data successfully exported to:\n{file_path}")
                     except Exception as e:
                         messagebox.showerror("Export Error", f"Failed to export data:\n{e}")
-
+                        
+            param.dataBreaksTemperature = []
+            param.dataBreaksVoltage = []
+            param.dataBreaksTimestamps = []
             self.main_data_ui()
 
 
