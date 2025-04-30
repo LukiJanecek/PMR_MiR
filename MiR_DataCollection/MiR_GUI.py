@@ -1,5 +1,6 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, filedialog
+import csv
 from datetime import datetime
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -16,7 +17,7 @@ class RestApiGui:
 
 
         #self.data_categories = list(self.data.keys())
-        self.data_categories = ["Brakes", "Temperature", "Voltage"]
+        self.data_categories = ["Voltage on Brakes", "Temperature on Brakes"]
 
         self.logged_user = None
         self.logged_robot = None
@@ -39,8 +40,8 @@ class RestApiGui:
 
         tk.Label(self.root, text="Select Robot:").pack()
         self.robot_var = tk.StringVar()
-        self.robot_var.set("MiR100")
-        self.robot_menu = tk.OptionMenu(self.root, self.robot_var, "MiR100", "MiR250", "MiR251", "MiR500")
+        self.robot_var.set("MiR250")
+        self.robot_menu = tk.OptionMenu(self.root, self.robot_var, "MiR250", "MiR251", "MiR500")
         self.robot_menu.pack()
 
         self.connect_button = tk.Button(self.root, text="Connect", command=lambda: self.try_connect(self.auth_var.get(), self.robot_var.get()))
@@ -224,8 +225,14 @@ class RestApiGui:
 
 
     def update_plot(self):
-        # Získání nových dat pro vybranou kategorii - ZDE NENI VYBER KATEGORIE
-        finished, values, times = MiR_BE.dataMeasuring()
+        # Volání dataMeasuring s vybranou kategorií
+        finished, voltage, temperature, times = MiR_BE.dataMeasuring()
+
+        if self.active_category == "Voltage on Brakes":
+            values = voltage
+            
+        elif self.active_category == "Temperature on Brakes":
+            values = temperature
 
         # Aktualizace listboxu
         self.listbox.delete(0, tk.END)
@@ -241,17 +248,35 @@ class RestApiGui:
         self.ax.tick_params(axis='x', rotation=45)
         self.canvas.draw()
         
-        now_str = datetime.now().strftime("%H:%M:%S.%f")[:-3]  # Ořežeme mikrosekundy na milisekundy
-        print(f"[{now_str}] update_plot called")
+        now_str = datetime.now().strftime("%H:%M:%S.%f")[:-3]
+        print(f"[{now_str}] update_plot called for {self.active_category}")
 
-        # Zastavit aktualizaci, pokud je měření ukončeno
         if not finished:
             self.plot_updater = self.root.after(10, self.update_plot)
         else:
-            # Návrat do hlavního UI po dokončení měření
-            messagebox.showinfo("Finished", "Data measuring finished.")
-            self.main_data_ui()
+            messagebox.showinfo("Finished", f"Data measuring for '{self.active_category}' finished.")
 
+            # ➕ Zeptáme se uživatele, jestli chce uložit
+            should_export = messagebox.askyesno("Export Data", "Do you want to export the measured data to a CSV file?")
+
+            if should_export:
+                file_path = filedialog.asksaveasfilename(
+                    defaultextension=".csv",
+                    filetypes=[("CSV files", "*.csv")],
+                    title="Save measured data"
+                )
+                if file_path:
+                    try:
+                        with open(file_path, mode='w', newline='') as file:
+                            writer = csv.writer(file)
+                            writer.writerow(["Time", "Volatage", "Temperature"])
+                            for t, v, temp in zip(times, voltage, temperature):
+                                writer.writerow([t, v, temp])
+                        messagebox.showinfo("Export", f"Data successfully exported to:\n{file_path}")
+                    except Exception as e:
+                        messagebox.showerror("Export Error", f"Failed to export data:\n{e}")
+
+            self.main_data_ui()
 
 
     def place_to_center_tool(self, width, height):
@@ -287,6 +312,11 @@ class RestApiGui:
             if self.plot_updater:
                 self.root.after_cancel(self.plot_updater)
                 self.plot_updater = None
+
+            # Vyčistíme graf, pokud existuje
+            if hasattr(self, 'ax') and hasattr(self, 'canvas'):
+                self.ax.clear()
+                self.canvas.draw()
 
             messagebox.showinfo("Info", f"Successfully Disconnected!")
             self.create_login_ui()

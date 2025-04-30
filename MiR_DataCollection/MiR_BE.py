@@ -326,7 +326,10 @@ def dataMeasuring():
         
     if mission_finished:
         print("✅ Mission ended.")
-        return mission_finished, param.dataBreaksVoltage, param.dataBreaksTimestamps
+        param.dataBreaksTemperature = []
+        param.dataBreaksVoltage = []
+        param.dataBreaksTimestamps = []
+        return mission_finished, param.dataBreaksVoltage, param.dataBreaksTemperature, param.dataBreaksTimestamps
 
     if result:
         voltage, temp = result
@@ -334,8 +337,8 @@ def dataMeasuring():
         param.dataBreaksVoltage.append(voltage)
         param.dataBreaksTemperature.append(temp)
         param.dataBreaksTimestamps.append(datetime.now())
-
-    return mission_finished, param.dataBreaksVoltage, param.dataBreaksTimestamps
+    
+    return mission_finished, param.dataBreaksVoltage, param.dataBreaksTemperature, param.dataBreaksTimestamps
 
 def save_to_json(data, fileName, folder):
     try:
