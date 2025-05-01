@@ -269,7 +269,7 @@ class RestApiGui:
                     try:
                         with open(file_path, mode='w', newline='') as file:
                             writer = csv.writer(file)
-                            writer.writerow(["Time", "Volatage", "Temperature"])
+                            writer.writerow(["Time", "Voltage", "Temperature"])
                             for t, v, temp in zip(times, voltage, temperature):
                                 writer.writerow([t, v, temp])
                         messagebox.showinfo("Export", f"Data successfully exported to:\n{file_path}")
